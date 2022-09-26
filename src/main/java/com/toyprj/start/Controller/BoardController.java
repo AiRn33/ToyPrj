@@ -1,10 +1,13 @@
 package com.toyprj.start.Controller;
 
+import com.toyprj.start.entity.Board;
 import com.toyprj.start.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+
+import javax.swing.text.html.StyleSheet;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,9 +25,12 @@ public class BoardController {
     }
 
     // 게시글 상세 조회
-    public String getBoard(){
+    @GetMapping("/getBoard/{boardNumber}")
+    public String getBoard(@PathVariable("boardNumber") Long boardNumber,Model model){
 
-        return "";
+        model.addAttribute("board", boardService.getBoard(boardNumber));
+
+        return "/getBoard";
     }
 
     // 게시글 생성
@@ -34,11 +40,22 @@ public class BoardController {
     }
 
     // 게시글 수정
-    public String modifyBoard(){
+    @GetMapping("/modifyBoard/{boardNumber}")
+    public String modifyGetBoard(@PathVariable("boardNumber") Long boardNumber,
+                              Model model){
 
-        return "";
+        model.addAttribute("board",boardService.getBoard(boardNumber));
+
+        return "/modifyBoard";
     }
 
+    @PostMapping("/modifyBoard/{boardNumber}")
+    public String modifyPostBoard(@PathVariable("boardNumber") Long boardNumber,
+                              Model model, @RequestParam("boardTitle") String boardTitle,
+                                  @RequestParam("boardContent") String boardContent){
+
+        return "redirect:/getBoard/"+boardNumber;
+    }
     // 게시글 삭제
     public String deleteBoard(){
 

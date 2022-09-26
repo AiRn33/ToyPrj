@@ -16,8 +16,7 @@ public class BoardService {
     public List<Board> getBoardList(){
 
         List<Board> boards = boardJpaRepostiory.findAll();
-        System.out.println("list 실행");
-        System.out.println(boards.get(0));
+
         return boards;
     }
 

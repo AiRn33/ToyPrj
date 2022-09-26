@@ -2,31 +2,34 @@ package com.toyprj.start.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "board")
 public class Board {
 
+    @Column(name = "number")
     Long number;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long boardNumber;
 
+    @Column(name = "board_writer")
     String boardWriter;
 
+    @Column(name = "board_title")
     String boardTitle;
 
+    @Column(name = "board_content")
     String boardContent;
 
+    @Column(name = "board_at")
     Date boardAt;
 
+    @Column(name = "board_count")
     int boardCount;
 
     @Builder

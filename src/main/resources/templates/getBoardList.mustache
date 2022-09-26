@@ -15,12 +15,11 @@
         </tr>
          {{# board}}
             <tr>
-                <td>{{boardNumber}}</td>
-                <td>{{boardWriter}}</td>
+               <td> {{boardNumber}}</td>
+                <td><a href="/getBoard/{{boardNumber}}">{{boardWriter}}</a></td>
                 <td>{{boardTitle}}</td>
             </tr>
          {{/board}}
     </table>
-
 </body>
 </html>

@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>게시판 조회</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>게시판 조회</h1>
+
+<table border="1px">
+    <tr>
+        <td>게시글 번호</td>
+        <td>작성자</td>
+        <td>제목</td>
+    </tr>
+    <tr>
+        <td> {{board.boardNumber}}</td>
+        <td>{{board.boardWriter}}</td>
+        <td>{{board.boardTitle}}</td>
+    </tr>
+</table>
+
+<a href="/getBoardList">글 목록</a><br>
+<a href="/modifyBoard/{{board.boardNumber}}">글 수정</a><br>
+<a href="/deleteBoard">글 삭제</a>
+</body>
+</html>
