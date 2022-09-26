@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>전체 게시판 조회</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>게시판 조회</h1>
+
+    <table border="1px">
+        <tr>
+            <td>게시글 번호</td>
+            <td>작성자</td>
+            <td>제목</td>
+        </tr>
+         {{# board}}
+            <tr>
+                <td>{{boardNumber}}</td>
+                <td>{{boardWriter}}</td>
+                <td>{{boardTitle}}</td>
+            </tr>
+         {{/board}}
+    </table>
+
+</body>
+</html>
