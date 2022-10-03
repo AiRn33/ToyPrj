@@ -1,29 +1,49 @@
 package com.toyprj.start.Controller;
 
+import com.toyprj.start.service.BoardService;
+import com.toyprj.start.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class MainController {
 
+    private final UserService userService;
+    private final BoardService boardService;
     // 메인 페이지
-    @GetMapping("/index")
-    public String index(){
+    @GetMapping("/main")
+    public String index(Model model){
 
-        return "/index";
+        model.addAttribute("board", boardService.getBoardList(0));
+        String name = null;
+        try {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            UserDetails userDetails = (UserDetails) principal;
+            name = userDetails.getUsername();
+        }catch (Exception e){
+            name = null;
+        }
+        if(name != null){
+            model.addAttribute("name", name);
+        }
+        return "/main";
     }
 
-    // 로그인 컨트롤러
-    public String login(){
+    //로그인
+    @GetMapping("/login")
+    public String login() {
 
-        return "";
+        return "/login";
     }
 
-    // 로그아웃 컨트롤러
-    public String logout(){
-
-        return "";
+    @GetMapping("/logoutForm")
+    public String logout() {
+        return "/logoutForm";
     }
 
-    
 }

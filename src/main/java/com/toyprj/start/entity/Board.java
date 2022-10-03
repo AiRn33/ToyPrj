@@ -5,14 +5,16 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
 
+@Builder
+@Data
 @Entity
-@Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "board")
 public class Board {
 
-    @Column(name = "number")
-    Long number;
+    @Column(name = "id")
+    Long id;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long boardNumber;
@@ -33,9 +35,9 @@ public class Board {
     int boardCount;
 
     @Builder
-    public Board(Long number, Long boardNumber, String boardWriter,
-                 String boardTitle, String boardContent, int boardCount){
-        this.number = number;
+    public Board(Long id, Long boardNumber, String boardWriter,
+                    String boardTitle, String boardContent, int boardCount){
+        this.id = id;
         this.boardNumber = boardNumber;
         this.boardWriter = boardWriter;
         this.boardTitle = boardTitle;
@@ -43,6 +45,5 @@ public class Board {
         this.boardAt = new Date();
         this.boardCount = boardCount;
     }
-
 
 }
