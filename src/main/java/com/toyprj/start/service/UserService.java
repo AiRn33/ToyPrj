@@ -59,4 +59,18 @@ public class UserService {
 
         userJpaRepository.deleteById(ida);
     }
+
+    public void modifyPw(String pw,String id) {
+
+        String password = bCryptPasswordEncoder.encode(pw);
+
+        userJpaRepository.modifyByuserPassword(password,id);
+    }
+
+    public String findUser(String userName) {
+
+        String userId = userJpaRepository.findByuserName(userName);
+
+        return userId;
+    }
 }

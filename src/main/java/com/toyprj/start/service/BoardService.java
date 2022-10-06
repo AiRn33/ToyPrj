@@ -6,8 +6,11 @@ import com.toyprj.start.model.BoardDto;
 import com.toyprj.start.repository.BoardJpaRepostiory;
 import com.toyprj.start.repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -17,11 +20,15 @@ public class BoardService {
     private final BoardJpaRepostiory boardJpaRepostiory;
     private final UserJpaRepository userJpaRepository;
 
-    public List<Board> getBoardList(int page){
+    // 페이징 처리
+    @Transactional
+    public Page<Board> getBoardList(Pageable pageable) {
 
-        List<Board> boards = boardJpaRepostiory.findpageBoard(page);
+        return boardJpaRepostiory.findAll(pageable);
+    }
 
-        return boards;
+    public int getBoardPage(){
+        return boardJpaRepostiory.pageNumberCheck();
     }
 
     public Board getBoard(Long boardnumber){

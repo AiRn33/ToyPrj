@@ -1,16 +1,20 @@
-package com.toyprj.start.Controller;
+package com.toyprj.start.controller;
 
 import com.toyprj.start.entity.Board;
-import com.toyprj.start.model.BoardDto;
+import com.toyprj.start.model.BoardPage;
 import com.toyprj.start.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.StyleSheet;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,24 +22,19 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    // 게시글 전체 조회
+    // 전체 게시판 조회
     @GetMapping("/board/getBoardList")
-    public String getBoardList(Model model){
+    public String getBoardListPage(Model model, @PageableDefault(size = 7, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
 
-        model.addAttribute("board", boardService.getBoardList(0));
+        model.addAttribute("board", boardService.getBoardList(pageable));
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
-
-        return "/board/getBoardList";
-    }
-    @GetMapping("/board/getBoardList/{page}")
-    public String getBoardListPage(Model model, @PathVariable("page") int page){
-
-        model.addAttribute("board", boardService.getBoardList(0));
+        List<BoardPage> pageNum = new ArrayList<BoardPage>();
+        for(int i = 0;
+            i < (boardService.getBoardPage() / 7) + 1 + (boardService.getBoardPage() % 7 == 0 ? -1 : 0); i++) {
+            BoardPage bp = new BoardPage(i, i + 1);
+            pageNum.add(bp);
+        }
+        model.addAttribute("page", pageNum);
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;

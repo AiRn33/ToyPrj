@@ -1,4 +1,4 @@
-package com.toyprj.start.Controller;
+package com.toyprj.start.controller;
 
 import com.toyprj.start.service.BoardService;
 import com.toyprj.start.service.UserService;
@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,7 +21,6 @@ public class MainController {
     @GetMapping("/main")
     public String index(Model model){
 
-        model.addAttribute("board", boardService.getBoardList(0));
         String name = null;
         try {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -46,4 +47,21 @@ public class MainController {
         return "/logoutForm";
     }
 
+    @GetMapping("/findPassword")
+    public String findPassword(){
+
+        return "/findPasswordForm";
+    }
+
+    @PostMapping("/findPasswordForm")
+    public String findPasswordForm(@RequestParam("user_name") String userName, Model model){
+
+       String userId = userService.findUser(userName);
+       if(userId == null){
+        model.addAttribute("no","");
+       }else {
+           model.addAttribute("userId", userId);
+       }
+        return "/findPasswordProc";
+    }
 }

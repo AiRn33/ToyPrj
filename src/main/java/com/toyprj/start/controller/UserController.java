@@ -1,4 +1,4 @@
-package com.toyprj.start.Controller;
+package com.toyprj.start.controller;
 
 import com.toyprj.start.entity.User;
 import com.toyprj.start.model.UserDto;
@@ -88,6 +88,30 @@ public class UserController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
         String name = userDetails.getUsername();
+
+        User user = userService.getUser(name);
+
+        model.addAttribute("name", user);
+
+        return "/user/mypage";
+    }
+
+    // 비밀번호 관련
+
+    @GetMapping("/user/pwModify")
+    public String pwModify(){
+
+        return "/user/pwModifyForm";
+    }
+
+    @PostMapping("/user/pwModifyProc")
+    public String pwModifyProc(@RequestParam("userPassword") String pw, Model model){
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        userService.modifyPw(pw,name);
 
         User user = userService.getUser(name);
 

@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface BoardJpaRepostiory extends JpaRepository<Board, Long> {
 
-    @Query(value = "select * from board order by board_number desc limit :page, 7;", nativeQuery = true )
-    List<Board> findpageBoard(@Param("page") int page);
+    @Query(value = "select count(board_number) from board;", nativeQuery = true )
+    int pageNumberCheck();
+
 }
