@@ -56,12 +56,11 @@ public class MainController {
     @PostMapping("/findPasswordForm")
     public String findPasswordForm(@RequestParam("user_name") String userName, Model model){
 
+
        String userId = userService.findUser(userName);
-       if(userId == null){
-        model.addAttribute("no","");
-       }else {
-           model.addAttribute("userId", userId);
-       }
+
+       model.addAttribute("userId", userId);
+
         return "/findPasswordProc";
     }
 }
