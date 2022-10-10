@@ -28,6 +28,10 @@
 ## 10/8
 코드 리팩토링(로그인시 해당 회원의 데이터 Session에 저장할 수 있도록 변경)
 @AuthenticationPrincipal 사용 예정
+-- 미달성 아직 차후 적용 예정
 
+## 10/10
+
+TodoList 템플릿 작성
 
 
