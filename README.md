@@ -34,4 +34,6 @@
 
 TodoList 템플릿 작성
 
+## 10/11
 
+TodoList 기본 기능 추가 완료
