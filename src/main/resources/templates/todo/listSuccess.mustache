@@ -1,0 +1,66 @@
+{{>layout/header}}
+<script>
+var check =1;
+
+</script>
+<br><br><br>
+
+<!-- Title -->
+<div class="container py-5">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col col-lg-9 col-xl-7">
+            <div class="card rounded-3">
+                <div class="card-body p-4">
+                    <div class="col-12 text-center">
+                        <div class="form-outline">
+                            <p class="text-center">
+                                <button class="btn btn-danger me-2" disabled>목표 달성 리스트</button>
+                            </p>
+                            <p class="text-center">
+                                <button class="btn btn-success me-2" disabled>최근 10개의 달성 목표만 확인 가능</button>
+                            </p>
+                        </div>
+                    </div>
+                    <table class="table mb-4 text-center">
+                        <thead>
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">할 일</th>
+                            <th scope="col">등록일</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#list}}
+                            <tr>
+                                <th scope="row">
+                                    <script>
+                                        document.write((check++));
+
+                                    </script>
+                                </th>
+                                <td>{{todoTitle}}</td>
+                                <td>{{todoAt}}</td>
+                            </tr>
+                        {{/list}}
+                        </tbody>
+                    </table>
+
+                    <div class="col-12 text-center">
+                        <a class="btn btn-primary" onclick="location.href='/todo/list'">돌아가기</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<!-- End Card -->
+
+</body>
+</html>

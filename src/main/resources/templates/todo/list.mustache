@@ -1,0 +1,100 @@
+{{>layout/header}}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+var check =1;
+
+    function createTodo() {
+
+    var formData = $("#formData").serialize();
+
+     $.ajax({
+                url : '/todo/listProc',
+                type: 'post',
+                data: formData,
+                success: function(data) {
+
+                    if(data == 1){
+                        window.location = 'http://localhost:8080/todo/list';
+                    }else{
+                        alert("목표가 5개가 넘습니다. 목표를 삭제 혹은 달성 완료 해주세요");
+                    }
+                }
+            });
+    }
+
+</script>
+
+<br><br><br>
+
+<!-- Title -->
+<div class="container py-5">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col col-lg-9 col-xl-7">
+            <div class="card rounded-3">
+                <div class="card-body p-4">
+
+                    <h4 class="text-center my-3 pb-3">To Do List</h4>
+
+                    <form id="formData" class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
+                        <div class="col-12 text-center">
+                            <div class="form-outline">
+                                <input type="text" name="todo_title" class="form-control text-center"/>
+                                <br>
+                                <p class="text-center">
+                                    <button class="btn btn-danger me-2" disabled>목표를 입력해주세요 (5개 까지만 입력 가능)</button>
+                                </p>
+                                <input type="button" onclick="createTodo()" class="btn btn-primary" value="등록">
+                                <a class="btn btn-secondary" onclick="location.href='/todo/listSuccess'">달성 성공</a>
+                            </div>
+                        </div>
+
+
+                    </form>
+
+                    <table class="table mb-4 text-center">
+                        <thead>
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">할 일</th>
+                            <th scope="col">등록일</th>
+                            <th scope="col">상태 설정</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#list}}
+                            <tr>
+                                <th scope="row">
+                                    <script>
+                                        document.write((check++));
+                                    </script>
+                                </th>
+                                <td>{{todoTitle}}</td>
+                                <td>{{todoAt}}</td>
+                                <td>
+                                    <a type="button" class="btn btn-success ms-1" href="/todo/complete?todo_number={{todoNumber}}">완료</a>
+                                    <a type="button" class="btn btn-danger" href="/todo/deleteList?todo_number={{todoNumber}}">삭제</a>
+                                </td>
+                            </tr>
+                        {{/list}}
+                        {{^list}}
+                            <tr>
+                                <td colspan="4">목표를 등록해주세요</td>
+                            </tr>
+                        {{/list}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<!-- End Card -->
+
+</body>
+</html>
