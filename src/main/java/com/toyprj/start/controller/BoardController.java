@@ -64,7 +64,13 @@ public class BoardController {
 
     // 게시글 생성
     @GetMapping("/board/createBoard")
-    public String createBoard(){
+    public String createBoard(Model model){
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        model.addAttribute("name", name);
 
         return "/board/createBoard";
     }

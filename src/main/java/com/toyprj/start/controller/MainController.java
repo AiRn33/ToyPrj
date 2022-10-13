@@ -3,6 +3,7 @@ package com.toyprj.start.controller;
 import com.toyprj.start.service.BoardService;
 import com.toyprj.start.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.session.StandardSession;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,7 +22,7 @@ public class MainController {
     private final BoardService boardService;
     // 메인 페이지
     @GetMapping("/main")
-    public String index(Model model){
+    public String index(Model model, HttpSession session){
 
         String name = null;
         try {
@@ -48,7 +51,13 @@ public class MainController {
     }
 
     @GetMapping("/findPassword")
-    public String findPassword(){
+    public String findPassword(Model model){
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        model.addAttribute("name", name);
 
         return "/findPasswordForm";
     }

@@ -27,19 +27,23 @@ public class TodoController {
     private final UserService userService;
 
     @GetMapping("/todo/list")
-    public String todo(Model model){
+    public String todo(Model model) {
 
-        try{
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            UserDetails userDetails = (UserDetails) principal;
-            String name = userDetails.getUsername();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        model.addAttribute("name", name);
+
+        try {
 
             Long id = userService.getUser(name).getId();
 
             List list = todoService.getTodoList(id);
 
             model.addAttribute("list", list);
-        }catch(Exception e){
+        } catch (Exception e) {
+
             model.addAttribute("list", null);
         }
 
@@ -47,19 +51,22 @@ public class TodoController {
     }
 
     @GetMapping("/todo/listSuccess")
-    public String todoSuccess(Model model){
+    public String todoSuccess(Model model) {
 
-        try{
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            UserDetails userDetails = (UserDetails) principal;
-            String name = userDetails.getUsername();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        model.addAttribute("name", name);
+
+        try {
 
             Long id = userService.getUser(name).getId();
 
             List list = todoService.getTodoComplete(id);
 
             model.addAttribute("list", list);
-        }catch(Exception e){
+        } catch (Exception e) {
             model.addAttribute("list", null);
         }
 
@@ -68,7 +75,7 @@ public class TodoController {
 
     @PostMapping("/todo/listProc")
     @ResponseBody
-    public int todoCreate(@RequestParam("todo_title")String todoTitle){
+    public int todoCreate(@RequestParam("todo_title") String todoTitle) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
@@ -78,16 +85,22 @@ public class TodoController {
 
         int count = todoService.getTodoListCount(id);
 
-        if(count < 5){
-            todoService.createList(todoTitle,id);
+        if (count < 5) {
+            todoService.createList(todoTitle, id);
             return 1;
         }
         return 0;
     }
 
     @GetMapping("/todo/complete")
-    public String todoComplete(@RequestParam("todo_number")Long todoNumber){
+    public String todoComplete(@RequestParam("todo_number") Long todoNumber,Model model) {
 
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        model.addAttribute("name", name);
 
         todoService.TodoListComplete(todoNumber);
 
@@ -95,14 +108,19 @@ public class TodoController {
     }
 
     @GetMapping("/todo/deleteList")
-    public String todoDeleteList(@RequestParam("todo_number")Long todoNumber){
+    public String todoDeleteList(@RequestParam("todo_number") Long todoNumber,Model model) {
 
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        model.addAttribute("name", name);
 
         todoService.getTodoListDelete(todoNumber);
 
         return "redirect:/todo/list";
     }
-
 
 
 }
