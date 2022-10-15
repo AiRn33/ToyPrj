@@ -17,7 +17,6 @@
                 </li>
             </ul>
             <!-- Pills content -->
-            <form action="/createBoardProc" method="POST">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
                         <!-- Email input -->
@@ -26,7 +25,7 @@
                         </p>
 
                         <div class="form-outline mb-4">
-                            <input type="text" id="loginName" name="boardTitle" class="form-control"/>
+                            <input type="text" id="loginName" name="boardTitle"class="form-control text-center" disabled/>
                         </div>
 
                         <p class="text-center">
@@ -34,15 +33,13 @@
                         </p>
 
                         <div class="form-outline mb-3">
-                            <textarea rows="10px" name="boardContent" class="form-control"></textarea>
+                            <textarea rows="10px" name="boardContent" class="form-control text-center" disabled></textarea>
                         </div>
                         <div class="form-outline mb-3">
-                            <button type="submit" class="btn btn-primary">작성하기</button>
-                            <a class="btn btn-danger" onclick="location.href='/board/getBoardList'">돌아가기</a>
+                            <a class="btn btn-primary" onclick="location.href='javascript:history.back()'">돌아가기</a>
                         </div>
                     </div>
                 </div>
-            </form>
             <div class="col-3"></div>
         </div>
 

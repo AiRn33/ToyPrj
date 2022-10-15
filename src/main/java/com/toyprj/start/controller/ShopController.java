@@ -1,7 +1,12 @@
 package com.toyprj.start.controller;
 
+import com.toyprj.start.entity.Shop;
+import com.toyprj.start.entity.User;
 import com.toyprj.start.model.BoardPage;
 import com.toyprj.start.service.BoardService;
+import com.toyprj.start.service.ShopService;
+import com.toyprj.start.service.TodoService;
+import com.toyprj.start.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +30,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ShopController {
 
+    private final ShopService shopService;
+    private final UserService userService;
+
+
     @GetMapping("/shop/main")
     public String shopMain(Model model){
 
@@ -44,14 +53,32 @@ public class ShopController {
     }
 
     @PostMapping("/shop/upload")
-    public String FileUploadPost(@RequestParam("file") MultipartFile file) throws IOException {
+    public String FileUploadPost(@RequestParam("file") MultipartFile file,
+                                 @RequestParam String shopTitle,
+                                 @RequestParam String shopContent) throws IOException {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
 
+        // 회원 정보 검색
+        User user = userService.getUser(name);
 
-        System.out.println(file.getContentType());
-        System.out.println(file.getOriginalFilename());
-        System.out.println(file.getBytes());
-        System.out.println(file.getName());
+        shopService.createShop(user,file,shopTitle,shopContent);
 
         return "/main";
+    }
+
+    @GetMapping("/shop/getShop")
+    public String getShop(){
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        Shop shop = shopService.getShop(userService.getUser(name).getId());
+
+        System.out.println(shop.getShopTitle());
+
+        return "/shop/getShop";
     }
 }
