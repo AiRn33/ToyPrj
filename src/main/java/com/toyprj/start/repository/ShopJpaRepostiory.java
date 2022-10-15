@@ -22,6 +22,6 @@ public interface ShopJpaRepostiory extends JpaRepository<Shop, Long> {
                     @Param("file_data") byte[] fileData, @Param("file_name")String fileName);
 
 
-    @Query(value = "select * from shop where shop_number = :shop_number")
-    Shop getShop(@Param("shop_number") Long shopNumber);
+    @Query(value = "select * from shop where shop_number = :shop_number", nativeQuery = true)
+    Shop getShop(@Param("shop_number")Long shopNumber);
 }

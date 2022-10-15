@@ -69,15 +69,17 @@ public class ShopController {
     }
 
     @GetMapping("/shop/getShop")
-    public String getShop(){
+    public String getShop(Model model){
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
         String name = userDetails.getUsername();
 
-        Shop shop = shopService.getShop(userService.getUser(name).getId());
+        System.out.println(userService.getUser(name).getId());
 
-        System.out.println(shop.getShopTitle());
+        Shop shop = shopService.getShop(1L);
+
+        model.addAttribute("shop",shop);
 
         return "/shop/getShop";
     }
