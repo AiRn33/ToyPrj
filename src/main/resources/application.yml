@@ -13,3 +13,8 @@ spring:
       format_sql: true
       ddl-auto: update
 
+
+
+  web:
+    resources:
+      static-locations=classpath:/static/img/:
