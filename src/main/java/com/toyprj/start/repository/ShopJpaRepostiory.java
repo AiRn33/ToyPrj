@@ -14,14 +14,17 @@ import java.util.Date;
 public interface ShopJpaRepostiory extends JpaRepository<Shop, Long> {
     @Modifying
     @Transactional
-    @Query(value = "insert into shop(id,shop_writer,shop_title,shop_content,shop_at,shop_buycheck,file_data,file_name) " +
-            "values(:id, :shop_writer, :shop_title, :shop_content, :shop_at, :shop_buycheck, :file_data, :file_name)", nativeQuery = true)
+    @Query(value = "insert into shop(id,shop_writer,shop_title,shop_content,shop_at,shop_buycheck,file_uuid,file_name) " +
+            "values(:id, :shop_writer, :shop_title, :shop_content, :shop_at, :shop_buycheck, :file_uuid, :file_name)", nativeQuery = true)
     void createShop(@Param("id") Long id, @Param("shop_writer") String shopWriter,
                    @Param("shop_title") String shopTitle, @Param("shop_content") String shopContent,
                    @Param("shop_at")Date shopAt, @Param("shop_buycheck") int shopBuyCheck,
-                    @Param("file_data") byte[] fileData, @Param("file_name")String fileName);
+                    @Param("file_uuid") String fileUuid, @Param("file_name")String fileName);
 
 
     @Query(value = "select * from shop where shop_number = :shop_number", nativeQuery = true)
     Shop getShop(@Param("shop_number")Long shopNumber);
+
+    @Query(value = "select count(shop_number) from shop", nativeQuery = true )
+    int pageNumberCheck();
 }

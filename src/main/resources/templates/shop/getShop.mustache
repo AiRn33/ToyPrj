@@ -17,34 +17,36 @@
                 </li>
             </ul>
             <!-- Pills content -->
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-                        <!-- Email input -->
-                        <div class="form-outline mb-3">
-                            <input type="image" src="{{img}}">
-                        </div>
-                        {{#shop}}
-                        <p class="text-center">
-                            <button class="btn btn-primary me-2" disabled>제목</button>
-                        </p>
-
-                        <div class="form-outline mb-4">
-                            <input type="text" id="loginName" name="boardTitle"class="form-control text-center" value="{{shopTitle}}" disabled/>
-                        </div>
-
-                        <p class="text-center">
-                            <button class="btn btn-primary me-2" disabled>내용</button>
-                        </p>
-
-                        <div class="form-outline mb-3">
-                            <textarea rows="10px" name="boardContent" class="form-control text-center" disabled>{{shopContent}}</textarea>
-                        </div>
-                        <div class="form-outline mb-3">
-                            <a class="btn btn-primary" onclick="location.href='javascript:history.back()'">돌아가기</a>
-                        </div>
+            <div class="tab-content">
+            <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+                <!-- Email input -->
+                {{#shop}}
+                    <div class="form-outline mb-3">
+                        <input type="image" src="/img/{{id}}/{{fileUuid}}">
                     </div>
-                    {{/shop}}
+                    <p class="text-center">
+                        <button class="btn btn-primary me-2" disabled>제목</button>
+                    </p>
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="loginName" name="boardTitle" class="form-control text-center"
+                               value="{{shopTitle}}" disabled/>
+                    </div>
+
+                    <p class="text-center">
+                        <button class="btn btn-primary me-2" disabled>내용</button>
+                    </p>
+
+                    <div class="form-outline mb-3">
+                        <textarea rows="10px" name="boardContent" class="form-control text-center"
+                                  disabled>{{shopContent}}</textarea>
+                    </div>
+                    <div class="form-outline mb-3">
+                        <a class="btn btn-primary" onclick="location.href='javascript:history.back()'">돌아가기</a>
+                    </div>
                 </div>
+                {{/shop}}
+            </div>
             <div class="col-3"></div>
         </div>
 

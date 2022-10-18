@@ -25,10 +25,10 @@ public class ShopService {
     private final ShopJpaRepostiory shopJpaRepostiory;
     private final UserJpaRepository userJpaRepository;
 
-    public void createShop(User user, MultipartFile file, String shopTitle, String shopContent) throws IOException {
+    public void createShop(User user, MultipartFile file, String uuid, String shopTitle, String shopContent) throws IOException {
 
         shopJpaRepostiory.createShop(user.getId(), user.getUserName(), shopTitle, shopContent,
-                new Date(), 0, file.getBytes(), file.getName());
+                new Date(), 0, uuid, file.getOriginalFilename());
 
     }
 
@@ -37,6 +37,17 @@ public class ShopService {
         Shop shop = shopJpaRepostiory.getShop(shopNumber);
 
        return shop;
+    }
+
+    @Transactional
+    public Page<Shop> getShopList(Pageable pageable) {
+
+        return shopJpaRepostiory.findAll(pageable);
+    }
+
+    public int getShopPage() {
+
+        return shopJpaRepostiory.pageNumberCheck();
     }
 }
 

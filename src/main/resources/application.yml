@@ -5,6 +5,12 @@ spring:
     username: root
     password: 1345
 
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
@@ -13,8 +19,7 @@ spring:
       format_sql: true
       ddl-auto: update
 
-
-
   web:
     resources:
       static-locations=classpath:/static/img/:
+

@@ -28,7 +28,7 @@ public class ShopDto {
 
     int shopBuyCheck;
 
-    byte[] fileData;
+    String fileUuid;
 
     String fileName;
 
@@ -44,7 +44,7 @@ public class ShopDto {
                 .shopContent(shopContent)
                 .shopAt(new Date())
                 .shopBuyCheck(shopBuyCheck)
-                .fileData(fileData)
+                .fileUuid(fileUuid)
                 .fileName(fileName)
                 .build();
     }

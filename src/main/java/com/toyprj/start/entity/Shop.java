@@ -38,8 +38,8 @@ public class Shop {
     @Column(name = "shop_buycheck")
     int shopBuyCheck;
 
-    @Column(name = "file_data")
-    byte[] fileData;
+    @Column(name = "file_uuid")
+    String fileUuid;
 
     @Column(name = "file_name")
     String fileName;
@@ -47,7 +47,7 @@ public class Shop {
     @Builder
     public Shop(Long id, Long shopNumber, String shopWriter,
                 String shopTitle, String shopContent,int shopBuyCheck,
-                byte[] fileData, String fileName){
+                String fileUuid, String fileName){
 
         this.id = id;
         this.shopNumber = shopNumber;
@@ -56,7 +56,7 @@ public class Shop {
         this.shopContent = shopContent;
         this.shopAt = new Date();
         this.shopBuyCheck = shopBuyCheck;
-        this.fileData = fileData;
+        this.fileUuid = fileUuid;
         this.fileName = fileName;
     }
 
