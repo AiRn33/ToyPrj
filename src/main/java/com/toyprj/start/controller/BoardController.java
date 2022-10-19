@@ -129,7 +129,6 @@ public class BoardController {
     @GetMapping("/deleteBoardProc/{boardNumber}")
     public String deleteProc(@PathVariable("boardNumber") Long boardNumber){
 
-        System.out.println("boardNumber : " + boardNumber);
         boardService.deleteBoard(boardNumber);
 
         return "redirect:/board/getBoardList";

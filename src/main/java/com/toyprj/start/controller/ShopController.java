@@ -27,6 +27,10 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -40,7 +44,7 @@ public class ShopController {
 
 
     @GetMapping("/shop/main")
-    public String getBoardListPage(Model model, @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+    public String getBoardListPage(Model model, @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
@@ -51,8 +55,8 @@ public class ShopController {
         model.addAttribute("shop", shopService.getShopList(pageable));
 
         List<shopPage> pageNum = new ArrayList<shopPage>();
-        for(int i = 0;
-            i < (shopService.getShopPage() / 8) + 1 + (shopService.getShopPage() % 8 == 0 ? -1 : 0); i++) {
+        for (int i = 0;
+             i < (shopService.getShopPage() / 8) + 1 + (shopService.getShopPage() % 8 == 0 ? -1 : 0); i++) {
             shopPage sp = new shopPage(i, i + 1);
             pageNum.add(sp);
         }
@@ -61,8 +65,9 @@ public class ShopController {
 
         return "/shop/main";
     }
+
     @GetMapping("/shop/upload")
-    public String FileUploadGet(){
+    public String FileUploadGet() {
 
         return "/shop/upload";
     }
@@ -78,56 +83,88 @@ public class ShopController {
 
         // 회원 정보 검색
         User user = userService.getUser(name);
-        String uuid = UUID.randomUUID().toString();
 
-        int count = 0;
-        for(int i = 0; i < file.getOriginalFilename().length(); i++){
-
-            if(file.getOriginalFilename().charAt(i) == '.'){
-                count = i;
-            }
-        }
-
-        String path = "C:\\start\\src\\main\\resources\\static\\img\\" + user.getId(); //폴더 경로
-        File Folder = new File(path);
-
-        // 해당 디렉토리가 없을경우 디렉토리를 생성합니다.
-        if (!Folder.exists()) {
-            try{
-                Folder.mkdir(); //폴더 생성합니다.
-            }
-            catch(Exception e){
-                e.getStackTrace();
-            }
-        }
-        file.transferTo(new File(path + "\\" + uuid + "."
-                + file.getOriginalFilename().substring(count+1, file.getOriginalFilename().length())));
-
-        shopService.createShop(user,file,uuid + "."
-                + file.getOriginalFilename().substring(count+1, file.getOriginalFilename().length()),shopTitle,shopContent);
+        shopService.createShop(user, file, shopTitle, shopContent);
 
         return "redirect:/shop/main";
     }
 
     @GetMapping("/shop/getShop/{shopNumber}")
-    public String getShop(Model model,@PathVariable("shopNumber")Long shopNumber){
+    public String getShop(Model model, @PathVariable("shopNumber") Long shopNumber) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
         String name = userDetails.getUsername();
 
         Shop shop = shopService.getShop(shopNumber);
-        System.out.println(shop.getShopTitle());
 
-        model.addAttribute("name",name);
-        model.addAttribute("shop",shop);
+        model.addAttribute("name", name);
+        model.addAttribute("shop", shop);
 
         return "/shop/getShop";
     }
 
-    @GetMapping("/shop/modifyShop")
-    public String modifyShop(){
+    @GetMapping("/shop/modifyShop/{shopNumber}")
+    public String modifyShop(@PathVariable("shopNumber") Long shopNumber, Model model) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        Shop shop = shopService.getShop(shopNumber);
+
+        model.addAttribute("name", name);
+        model.addAttribute("shop", shop);
 
         return "/shop/modifyShop";
     }
+
+    @PostMapping("/shop/modifyShop/{shopNumber}")
+    public String modifyShop(@PathVariable("shopNumber") Long shopNumber,
+                             @RequestParam("file") MultipartFile file,
+                             @RequestParam String shopTitle,
+                             @RequestParam String shopContent) throws IOException {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        Shop shop = shopService.getShop(shopNumber);
+
+        shopService.modifyShop(shop, shopTitle, shopContent, file);
+
+        return "redirect:/shop/main";
+    }
+
+    @GetMapping("/shop/deleteShop/{shopNumber}")
+    public String deleteShop(@PathVariable("shopNumber") Long shopNumber, Model model) {
+
+
+        model.addAttribute("shopNumber", shopNumber);
+
+        return "/shop/deleteShopProc";
+    }
+
+    @GetMapping("/shop/deleteShopProc/{shopNumber}")
+    public String deleteShopProc(@PathVariable("shopNumber") Long shopNumber) {
+
+        shopService.deleteShop(shopNumber);
+
+        return "redirect:/shop/main";
+    }
+
+    @GetMapping("/shop/myShop")
+    public String myShop(Model model){
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        List<Shop> shop = shopService.getMyShop(name);
+
+        model.addAttribute("shop", shop);
+
+        return "/shop/myShop";
+    }
+
 }

@@ -34,6 +34,10 @@ public class User {
     @Column(name = "roles", nullable = false)
     private String roles;
 
+    @Column(name = "user_myshop", nullable = false)
+    private String userMyshop;
+
+
     // JWT 로그인을 위한 생성자
     public User(String userId, String userPassword){
         this.userId = userId;
@@ -51,12 +55,13 @@ public class User {
 
     @Builder
     public User(Long id, String userId, String userPassword
-            , String userName, String roles){
+            , String userName, String roles, String userMyshop){
         this.id = id;
         this.userId = userId;
         this.userPassword = userPassword;
         this.userName = userName;
         this.userAt = new Date();
         this.roles = roles;
+        this.userMyshop = userMyshop;
     }
 }

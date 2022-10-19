@@ -25,6 +25,7 @@ public class UserDto {
 
     private String roles;
 
+    private String userMyshop;
     @Builder
     public User toEntity(){
         return User.builder()
@@ -34,6 +35,7 @@ public class UserDto {
                 .userName(userName)
                 .roles(roles)
                 .userAt(new Date())
+                .userMyshop(userMyshop)
                 .build();
     }
 }
