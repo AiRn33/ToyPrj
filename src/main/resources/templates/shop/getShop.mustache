@@ -41,11 +41,20 @@
                         <textarea rows="10px" name="boardContent" class="form-control text-center"
                                   disabled>{{shopContent}}</textarea>
                     </div>
+                {{#check}}
                     <div class="form-outline mb-3">
                         <a class="btn btn-success" href="/shop/modifyShop/{{shopNumber}}">글 수정</a>
                         <a class="btn btn-danger" href="/shop/deleteShop/{{shopNumber}}">글 삭제</a>
                         <a class="btn btn-primary" onclick="location.href='javascript:history.back()'">돌아가기</a>
                     </div>
+                {{/check}}
+                {{^check}}
+                    <div class="form-outline mb-3">
+                        <a class="btn btn-success" href="/shop/modifyShop/{{shopNumber}}">구매하기</a>
+                        <a class="btn btn-danger" href="/shop/deleteShop/{{shopNumber}}">장바구니</a>
+                        <a class="btn btn-primary" onclick="location.href='javascript:history.back()'">돌아가기</a>
+                    </div>
+                {{/check}}
                 </div>
                 {{/shop}}
             </div>

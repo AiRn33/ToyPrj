@@ -67,7 +67,13 @@ public class ShopController {
     }
 
     @GetMapping("/shop/upload")
-    public String FileUploadGet() {
+    public String FileUploadGet(Model model) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        model.addAttribute("name", name);
 
         return "/shop/upload";
     }
@@ -98,6 +104,11 @@ public class ShopController {
 
         Shop shop = shopService.getShop(shopNumber);
 
+        Long id = userService.getUser(name).getId();
+
+        if(id == shop.getId()){
+            model.addAttribute("check", 1);
+        }
         model.addAttribute("name", name);
         model.addAttribute("shop", shop);
 
@@ -139,6 +150,11 @@ public class ShopController {
     @GetMapping("/shop/deleteShop/{shopNumber}")
     public String deleteShop(@PathVariable("shopNumber") Long shopNumber, Model model) {
 
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        model.addAttribute("name", name);
 
         model.addAttribute("shopNumber", shopNumber);
 
@@ -162,6 +178,7 @@ public class ShopController {
 
         List<Shop> shop = shopService.getMyShop(name);
 
+        model.addAttribute("name", name);
         model.addAttribute("shop", shop);
 
         return "/shop/myShop";
