@@ -35,8 +35,11 @@ public class Shop {
     @Column(name = "shop_at")
     Date shopAt;
 
-    @Column(name = "shop_buycheck")
-    int shopBuyCheck;
+    @Column(name = "shop_amount")
+    Long shopAmount;
+
+    @Column(name = "shop_price")
+    Long shopPrice;
 
     @Column(name = "file_uuid")
     String fileUuid;
@@ -46,8 +49,8 @@ public class Shop {
 
     @Builder
     public Shop(Long id, Long shopNumber, String shopWriter,
-                String shopTitle, String shopContent,int shopBuyCheck,
-                String fileUuid, String fileName){
+                String shopTitle, String shopContent,Long shopAmount,
+                Long shopPrice,String fileUuid, String fileName){
 
         this.id = id;
         this.shopNumber = shopNumber;
@@ -55,7 +58,8 @@ public class Shop {
         this.shopTitle = shopTitle;
         this.shopContent = shopContent;
         this.shopAt = new Date();
-        this.shopBuyCheck = shopBuyCheck;
+        this.shopAmount = shopAmount;
+        this.shopPrice = shopPrice;
         this.fileUuid = fileUuid;
         this.fileName = fileName;
     }

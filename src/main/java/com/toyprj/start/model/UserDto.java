@@ -35,7 +35,7 @@ public class UserDto {
                 .userName(userName)
                 .roles(roles)
                 .userAt(new Date())
-                .userMyshop(userMyshop)
+                .userMyshop("")
                 .build();
     }
 }

@@ -20,21 +20,7 @@ public class UserController {
     private final UserService userService;
 
 
-    // 회원가입
-    @GetMapping("/user/signup")
-    public String signUp() {
 
-        return "/user/signup";
-    }
-
-    @PostMapping("/signupProc")
-    public String signUpProc(@RequestParam("userId") String userId,
-                             @RequestParam("userPassword") String userPassword,
-                             @RequestParam("userName") String userName) {
-
-        userService.signup(userId, userPassword, userName);
-        return "redirect:/main";
-    }
     // 회원 탈퇴
 
     @GetMapping("/user/profileDelete")

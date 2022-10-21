@@ -26,7 +26,9 @@ public class ShopDto {
 
     Date shopAt;
 
-    int shopBuyCheck;
+    Long shopAmount;
+
+    Long shopPrice;
 
     String fileUuid;
 
@@ -43,7 +45,8 @@ public class ShopDto {
                 .shopTitle(shopTitle)
                 .shopContent(shopContent)
                 .shopAt(new Date())
-                .shopBuyCheck(shopBuyCheck)
+                .shopAmount(shopAmount)
+                .shopPrice(shopPrice)
                 .fileUuid(fileUuid)
                 .fileName(fileName)
                 .build();

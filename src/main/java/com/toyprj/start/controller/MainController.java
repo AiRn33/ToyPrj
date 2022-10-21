@@ -72,4 +72,38 @@ public class MainController {
 
         return "/findPasswordProc";
     }
+
+    // 회원가입
+    @GetMapping("/signupCheck")
+    public String signUpCheck() {
+
+        return "/signupCheck";
+    }
+    @GetMapping("/signup")
+    public String signUp() {
+
+        return "/signup";
+    }
+    @GetMapping("/signupManager")
+    public String signUpManager() {
+
+        return "/signupManager";
+    }
+
+    @PostMapping("/signupProc")
+    public String signUpProc(@RequestParam("userId") String userId,
+                             @RequestParam("userPassword") String userPassword,
+                             @RequestParam("userName") String userName,
+                             @RequestParam("check") String check) {
+
+        userService.signup(userId, userPassword, userName, check);
+
+        return "redirect:/main";
+    }
+
+    @GetMapping("/exception")
+    public String a() {
+
+        return "/exception";
+    }
 }

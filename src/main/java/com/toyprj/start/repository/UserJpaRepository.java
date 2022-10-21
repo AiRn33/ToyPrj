@@ -26,5 +26,9 @@ public interface UserJpaRepository extends JpaRepository<User, Long>{
     @Query(value = "select user_myshop from user where id = :id", nativeQuery = true )
     String findMyShop(@Param("id")Long id);
 
+    @Query(value = "update user set user_myshop = :user_myshop where user_id = :user_id", nativeQuery = true)
+    @Modifying
+    @Transactional
+    void addMyShop(@Param("user_myshop")String add, @Param("user_id") String id);
 
 }

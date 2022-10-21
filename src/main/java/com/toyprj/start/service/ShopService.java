@@ -27,7 +27,7 @@ public class ShopService {
     private final ShopJpaRepostiory shopJpaRepostiory;
     private final UserJpaRepository userJpaRepository;
 
-    public void createShop(User user, MultipartFile file, String shopTitle, String shopContent) throws IOException {
+    public void createShop(User user, MultipartFile file, String shopTitle, String shopContent, String shopAmount, String shopPrice) throws IOException {
 
         int count = 0;
         for (int i = 0; i < file.getOriginalFilename().length(); i++) {
@@ -55,7 +55,7 @@ public class ShopService {
         file.transferTo(new File(path + "\\" + uuid));
 
         shopJpaRepostiory.createShop(user.getId(), user.getUserName(), shopTitle, shopContent,
-                new Date(), 0, uuid, file.getOriginalFilename());
+                new Date(), 0, uuid, file.getOriginalFilename(), shopAmount, shopPrice);
     }
 
     public Shop getShop(Long shopNumber){
@@ -119,7 +119,6 @@ public class ShopService {
         dto.setShopWriter(shop.getShopWriter());
         dto.setShopTitle(shopTitle);
         dto.setShopContent(shopContent);
-        dto.setShopBuyCheck(0);
         dto.setFileUuid(uuid + "." + file.getOriginalFilename().substring(count + 1, file.getOriginalFilename().length()));
         dto.setFileName(file.getOriginalFilename());
 
@@ -132,16 +131,20 @@ public class ShopService {
 
         // 장바구니의 글을 체크함함
        String result[] = myshop.split(",");
-       System.out.println(Arrays.toString(result));
+
 
        List<Shop> list = new ArrayList<>();
 
        for(int i = 0; i < result.length; i++){
-           list.add(shopJpaRepostiory.findById(Long.valueOf(result[i])).orElse(null));
+           if(!result[i].equals("")) {
+               list.add(shopJpaRepostiory.findById(Long.valueOf(result[i])).orElse(null));
+           }
        }
 
        return list;
     }
+
+
 }
 
 

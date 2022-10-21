@@ -62,6 +62,9 @@ public class ShopController {
         }
         model.addAttribute("page", pageNum);
 
+        if (userService.getUser(name).getRoles().equals("ROLE_MANAGER")) {
+            model.addAttribute("check", 1);
+        }
 
         return "/shop/main";
     }
@@ -81,7 +84,9 @@ public class ShopController {
     @PostMapping("/shop/upload")
     public String FileUploadPost(@RequestParam("file") MultipartFile file,
                                  @RequestParam String shopTitle,
-                                 @RequestParam String shopContent) throws IOException {
+                                 @RequestParam String shopContent,
+                                 @RequestParam String shopAmount,
+                                 @RequestParam String shopPrice) throws IOException {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
@@ -90,7 +95,7 @@ public class ShopController {
         // 회원 정보 검색
         User user = userService.getUser(name);
 
-        shopService.createShop(user, file, shopTitle, shopContent);
+        shopService.createShop(user, file, shopTitle, shopContent, shopAmount, shopPrice);
 
         return "redirect:/shop/main";
     }
@@ -106,7 +111,7 @@ public class ShopController {
 
         Long id = userService.getUser(name).getId();
 
-        if(id == shop.getId()){
+        if (id == shop.getId()) {
             model.addAttribute("check", 1);
         }
         model.addAttribute("name", name);
@@ -170,7 +175,7 @@ public class ShopController {
     }
 
     @GetMapping("/shop/myShop")
-    public String myShop(Model model){
+    public String myShop(Model model) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
@@ -183,5 +188,31 @@ public class ShopController {
 
         return "/shop/myShop";
     }
+
+    @GetMapping("/shop/addMyShop/{shopNumber}")
+    public String addMyShop(Model model, @PathVariable("shopNumber") Long shopNumber) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        userService.addMyShop(shopNumber, name);
+
+        return "redirect:/shop/main";
+    }
+
+    @GetMapping("/shop/deleteMyShop/{shopNumber}")
+    public String deleteMyShop(Model model, @PathVariable("shopNumber") Long shopNumber) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        userService.deleteMyShop(shopNumber, name);
+
+        return "redirect:/shop/myShop";
+    }
+
+
 
 }

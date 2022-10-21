@@ -41,20 +41,38 @@
                         <textarea rows="10px" name="boardContent" class="form-control text-center"
                                   disabled>{{shopContent}}</textarea>
                     </div>
-                {{#check}}
+                    <p class="text-center">
+                        <button class="btn btn-primary me-2" disabled>판매 가격</button>
+                    </p>
+
                     <div class="form-outline mb-3">
-                        <a class="btn btn-success" href="/shop/modifyShop/{{shopNumber}}">글 수정</a>
-                        <a class="btn btn-danger" href="/shop/deleteShop/{{shopNumber}}">글 삭제</a>
-                        <a class="btn btn-primary" onclick="location.href='javascript:history.back()'">돌아가기</a>
+                        <input type="text" id="loginName" name="boardTitle" class="form-control text-center"
+                               value="{{shopPrice}}원" disabled/>
                     </div>
-                {{/check}}
-                {{^check}}
-                    <div class="form-outline mb-3">
-                        <a class="btn btn-success" href="/shop/modifyShop/{{shopNumber}}">구매하기</a>
-                        <a class="btn btn-danger" href="/shop/deleteShop/{{shopNumber}}">장바구니</a>
-                        <a class="btn btn-primary" onclick="location.href='javascript:history.back()'">돌아가기</a>
-                    </div>
-                {{/check}}
+                    {{#check}}
+                        <div class="form-outline mb-3">
+                            <a class="btn btn-success" href="/shop/modifyShop/{{shopNumber}}">글 수정</a>
+                            <a class="btn btn-danger" href="/shop/deleteShop/{{shopNumber}}">글 삭제</a>
+                            <a class="btn btn-primary" onclick="location.href='javascript:history.back()'">돌아가기</a>
+                        </div>
+                    {{/check}}
+                    {{^check}}
+                        <form action="/shop/buy/{{shopNumber}}" method="post">
+                            <div class="form-outline mb-3">
+                                <div class="form-outline mb-4">
+                                    <input type="text" name="shopAmount" class="form-control text-center"
+                                           placeholder="구매 수량을 입력해주세요"
+                                           oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+                                </div>
+                            </div>
+
+                            <div class="form-outline mb-3">
+                                <button class="btn btn-success" type="submit">구매하기</button>
+                                <a class="btn btn-danger" href="/shop/addMyShop/{{shopNumber}}">장바구니 넣기</a>
+                                <a class="btn btn-primary" onclick="location.href='javascript:history.back()'">돌아가기</a>
+                            </div>
+                        </form>
+                    {{/check}}
                 </div>
                 {{/shop}}
             </div>
