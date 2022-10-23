@@ -4,6 +4,9 @@ import com.toyprj.start.service.BoardService;
 import com.toyprj.start.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.session.StandardSession;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -20,6 +23,7 @@ public class MainController {
 
     private final UserService userService;
     private final BoardService boardService;
+
     // 메인 페이지
     @GetMapping("/main")
     public String index(Model model, HttpSession session){
@@ -101,9 +105,5 @@ public class MainController {
         return "redirect:/main";
     }
 
-    @GetMapping("/exception")
-    public String a() {
 
-        return "/exception";
-    }
 }

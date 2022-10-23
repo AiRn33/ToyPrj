@@ -1,0 +1,15 @@
+<input type="hidden" id="number" value="{{number}}">
+
+<script type="text/javascript">
+
+var val = document.getElementById('number').value;
+
+   if (val == 1) {
+      alert('구매 완료');
+      location.href='/shop/main';
+   }
+   else {
+      alert('구매량이 판매량을 초과했습니다\n구매 개수를 다시 입력해주세요');
+      location.href='javascript:history.back()';
+   }
+</script>

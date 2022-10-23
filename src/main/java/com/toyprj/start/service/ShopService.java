@@ -55,7 +55,7 @@ public class ShopService {
         file.transferTo(new File(path + "\\" + uuid));
 
         shopJpaRepostiory.createShop(user.getId(), user.getUserName(), shopTitle, shopContent,
-                new Date(), 0, uuid, file.getOriginalFilename(), shopAmount, shopPrice);
+                new Date(), uuid, file.getOriginalFilename(), shopAmount, shopPrice);
     }
 
     public Shop getShop(Long shopNumber){
@@ -71,9 +71,13 @@ public class ShopService {
         return shopJpaRepostiory.findAll(pageable);
     }
 
+    public List<Shop> getSellShopList(Long id){
+
+        return shopJpaRepostiory.getSellShopList(id);
+    }
     public int getShopPage() {
 
-        return shopJpaRepostiory.pageNumberCheck();
+        return shopJpaRepostiory.pageNumberCheckMember();
     }
 
     public void deleteShop(Long shopNumber){
@@ -81,7 +85,8 @@ public class ShopService {
         shopJpaRepostiory.deleteById(shopNumber);
     }
 
-    public void modifyShop(Shop shop,String shopTitle, String shopContent, MultipartFile file) throws IOException {
+    public void modifyShop(Shop shop,String shopTitle, String shopContent, Long shopPrice,
+                           Long shopAmount, MultipartFile file) throws IOException {
 
 
         // 기존의 파일 삭제
@@ -90,7 +95,6 @@ public class ShopService {
             // 파일 삭제
             Files.delete(filePath);
         } catch (NoSuchFileException e) {
-
             System.out.println("삭제하려는 이미지가 없습니다");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -119,6 +123,8 @@ public class ShopService {
         dto.setShopWriter(shop.getShopWriter());
         dto.setShopTitle(shopTitle);
         dto.setShopContent(shopContent);
+        dto.setShopPrice(shopPrice);
+        dto.setShopAmount(shopAmount);
         dto.setFileUuid(uuid + "." + file.getOriginalFilename().substring(count + 1, file.getOriginalFilename().length()));
         dto.setFileName(file.getOriginalFilename());
 

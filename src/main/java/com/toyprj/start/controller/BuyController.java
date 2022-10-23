@@ -34,7 +34,9 @@ public class BuyController {
 
         int number = buyService.buyShop(shopService.getShop(shopNumber), userService.getUser(name).getId(), shopAmount);
 
-        return "redirect:/shop/main";
+        model.addAttribute("number", number);
+
+        return "/shop/buyCheck";
     }
 
 }

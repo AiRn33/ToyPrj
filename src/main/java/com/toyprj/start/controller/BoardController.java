@@ -3,6 +3,7 @@ package com.toyprj.start.controller;
 import com.toyprj.start.entity.Board;
 import com.toyprj.start.model.BoardPage;
 import com.toyprj.start.service.BoardService;
+import com.toyprj.start.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,6 +22,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final UserService userService;
 
     // 전체 게시판 조회
     @GetMapping("/board/getBoardList")
@@ -54,6 +56,10 @@ public class BoardController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
         String name = userDetails.getUsername();
+
+        if(boardService.getBoard(boardNumber).getId() == userService.getUser(name).getId()){
+            model.addAttribute("check", 1);
+        }
 
         model.addAttribute("name", name);
 

@@ -49,11 +49,18 @@
                         <input type="text" id="loginName" name="boardTitle" class="form-control text-center"
                                value="{{shopPrice}}원" disabled/>
                     </div>
+                    <div class="form-outline mb-3">
+                        <input type="text" id="loginName" name="boardTitle" class="form-control text-center"
+                               value="남은 상품 : {{shopAmount}}" disabled/>
+                    </div>
                     {{#check}}
+                        <div class="form-outline mb-4">
+                            <input type="text" name="shopAmount" class="form-control text-center" value="{{shopAmount}}개 남아있습니다" disabled/>
+                        </div>
                         <div class="form-outline mb-3">
                             <a class="btn btn-success" href="/shop/modifyShop/{{shopNumber}}">글 수정</a>
                             <a class="btn btn-danger" href="/shop/deleteShop/{{shopNumber}}">글 삭제</a>
-                            <a class="btn btn-primary" onclick="location.href='javascript:history.back()'">돌아가기</a>
+                            <a class="btn btn-primary" onclick="location.href='/shop/sell'">돌아가기</a>
                         </div>
                     {{/check}}
                     {{^check}}

@@ -1,9 +1,16 @@
 {{>layout/header}}
-<!-- Title -->
 
+{{^check}}
+    <!-- Title -->
+    <script type="text/javascript">
+
+    alert('판매자는 쇼핑몰로 이동할 수 없습니다\n판매 물품 등록 페이지로 이동합니다');
+
+    </script>
+{{/check}}
 <br><br><br><br><br>
 <div class="text-center">
-    <h1>쇼핑몰</h1>
+    <h1>판매 물품</h1>
 </div>
 <!-- End Title-->
 
@@ -25,33 +32,15 @@
                 </div>
             {{/shop}}
         </div>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col-2"></div>
-                <div class="col-8">
-                    <a class="btn btn-primary" href="/shop/myShop">장바구니</a>
-                </div>
-            </div>
-        </div>
 </section>
-
-
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-        <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
-        </li>
-        {{#page}}
-            <li class="page-item"><a class="page-link"
-                                     href="/shop/main?page={{pageNum}}
-                ">{{pageView}}</a></li>
-        {{/page}}
-        <li class="page-item">
-            <a class="page-link" href="#">다음</a>
-        </li>
-    </ul>
-</nav>
-
+<div class="container text-center">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <a class="btn btn-success" href="/shop/upload">새글 등록하기</a>
+        </div>
+    </div>
+</div>
 <br>
 <br>
 <br>

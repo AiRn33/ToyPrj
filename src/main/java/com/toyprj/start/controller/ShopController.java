@@ -44,7 +44,7 @@ public class ShopController {
 
 
     @GetMapping("/shop/main")
-    public String getBoardListPage(Model model, @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public String getBoardListPage(Model model, @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.DESC) Pageable pageableMember) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
@@ -52,23 +52,45 @@ public class ShopController {
 
         model.addAttribute("name", name);
 
-        model.addAttribute("shop", shopService.getShopList(pageable));
 
-        List<shopPage> pageNum = new ArrayList<shopPage>();
-        for (int i = 0;
-             i < (shopService.getShopPage() / 8) + 1 + (shopService.getShopPage() % 8 == 0 ? -1 : 0); i++) {
-            shopPage sp = new shopPage(i, i + 1);
-            pageNum.add(sp);
+        if(userService.getUser(name).getRoles().equals("ROLE_MEMBER")) {
+            model.addAttribute("shop", shopService.getShopList(pageableMember));
+
+            List<shopPage> pageNum = new ArrayList<shopPage>();
+            for (int i = 0;
+                 i < (shopService.getShopPage() / 8) + 1 + (shopService.getShopPage() % 8 == 0 ? -1 : 0); i++) {
+                shopPage sp = new shopPage(i, i + 1);
+                pageNum.add(sp);
+            }
+            model.addAttribute("page", pageNum);
+
+            if (userService.getUser(name).getRoles().equals("ROLE_MANAGER")) {
+                model.addAttribute("check", 1);
+            }
+
+            return "/shop/main";
+
+        }else{
+            model.addAttribute("shop", shopService.getSellShopList(userService.getUser(name).getId()));
+
+            return "/shop/sell";
         }
-        model.addAttribute("page", pageNum);
-
-        if (userService.getUser(name).getRoles().equals("ROLE_MANAGER")) {
-            model.addAttribute("check", 1);
-        }
-
-        return "/shop/main";
     }
 
+    @GetMapping("/shop/sell")
+    public String sell(Model model){
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String name = userDetails.getUsername();
+
+        model.addAttribute("name", name);
+
+        model.addAttribute("check", 1);
+        model.addAttribute("shop", shopService.getSellShopList(userService.getUser(name).getId()));
+
+        return "/shop/sell";
+    }
     @GetMapping("/shop/upload")
     public String FileUploadGet(Model model) {
 
@@ -97,7 +119,7 @@ public class ShopController {
 
         shopService.createShop(user, file, shopTitle, shopContent, shopAmount, shopPrice);
 
-        return "redirect:/shop/main";
+        return "redirect:/shop/sell";
     }
 
     @GetMapping("/shop/getShop/{shopNumber}")
@@ -139,17 +161,22 @@ public class ShopController {
     public String modifyShop(@PathVariable("shopNumber") Long shopNumber,
                              @RequestParam("file") MultipartFile file,
                              @RequestParam String shopTitle,
-                             @RequestParam String shopContent) throws IOException {
+                             @RequestParam String shopContent,
+                             @RequestParam Long shopPrice,
+                             @RequestParam Long shopAmount,
+                             Model model) throws IOException {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
         String name = userDetails.getUsername();
 
+        model.addAttribute("name", name);
+
         Shop shop = shopService.getShop(shopNumber);
 
-        shopService.modifyShop(shop, shopTitle, shopContent, file);
+        shopService.modifyShop(shop, shopTitle, shopContent,shopPrice, shopAmount, file);
 
-        return "redirect:/shop/main";
+        return "redirect:/shop/sell";
     }
 
     @GetMapping("/shop/deleteShop/{shopNumber}")

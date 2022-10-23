@@ -39,7 +39,7 @@ public class BuyService {
 
         buyJpaRepostiory.save(buy);
 
-        return 0;
+        return 1;
     }
 }
 

@@ -66,6 +66,8 @@ public class UserController {
 
         User user = userService.getUser(name);
         model.addAttribute("name", user);
+        model.addAttribute("roles", user.getRoles().equals("ROLE_MEMBER")?"일반 유저":"관리자 유저");
+
         return "redirect:/user/mypage";
     }
 
@@ -81,6 +83,7 @@ public class UserController {
         User user = userService.getUser(name);
 
         model.addAttribute("name", user);
+        model.addAttribute("roles", user.getRoles().equals("ROLE_MEMBER")?"일반 유저":"관리자 유저");
 
         return "/user/mypage";
     }
