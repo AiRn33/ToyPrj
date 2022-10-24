@@ -2,6 +2,8 @@
 <body>
 <style>
 	#paging { text-align: center; }
+
+
 </style>
 <br><br><br>
 <div class="container py-5">
@@ -48,17 +50,21 @@
 
                     <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
-                            </li>
+                            {{#start}}
+                                <li class="page-item">
+                                    <a class="page-link" href="/board/getBoardList?page={{start}}"-3>이전</a>
+                                </li>
+                            {{/start}}
                             {{#page}}
                                 <li class="page-item"><a class="page-link"
                                                          href="/board/getBoardList?page={{pageNum}}
                                     ">{{pageView}}</a></li>
                             {{/page}}
+                            {{#end}}
                             <li class="page-item">
-                                <a class="page-link" href="#">다음</a>
+                                <a class="page-link" href="/board/getBoardList?page={{end}}"+3>다음</a>
                             </li>
+                            {{/end}}
                         </ul>
                     </nav>
                 </div>

@@ -1,0 +1,59 @@
+{{>layout/header}}
+<body>
+<style>
+	#paging { text-align: center; }
+
+
+
+
+
+
+</style>
+<br><br><br>
+<div class="container py-5">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col col-lg-9 col-xl-7">
+            <div class="card rounded-3">
+                <div class="card-body p-4">
+                    <h4 class="text-center my-3 pb-3">판매된 상품 리스트</h4>
+
+                    <table class="table table-hover mb-4 text-center">
+                        <thead>
+                        <tr>
+                            <th scope="col" style="width:300px">상품 이름</th>
+                            <th scope="col" style="width:200px">구매자</th>
+                            <th scope="col">구매 수량</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#shop}}
+                            <tr onClick="location.href='/shop/getShop/{{shopNumber}}'">
+                                <th scope="row">{{shopTitle}}</th>
+                                <td>{{buyName}}</td>
+                                <td>{{buyAmount}}</td>
+                            </tr>
+                        {{/shop}}
+                        {{^shop}}
+                            <tr>
+                                <td colspan="3">판매된 상품이 없습니다</td>
+                            </tr>
+                        {{/shop}}
+                        </tbody>
+                    </table>
+
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <a class="btn btn-success" href="/shop/upload">새글 등록하기</a>
+                                <a class="btn btn-danger" href="/shop/sell">돌아가기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -34,11 +34,12 @@ public class UserService {
 
     public User getUser(String id) {
 
-        User user = userJpaRepository.findByuserId(id);
-
-        return user;
+        return userJpaRepository.findByuserId(id);
     }
 
+    public User getIdUser(Long id){
+        return userJpaRepository.findById(id).orElse(null);
+    }
     public void updateUser(String name) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -73,9 +74,7 @@ public class UserService {
 
     public String findUser(String userName) {
 
-        String userId = userJpaRepository.findByuserName(userName);
-
-        return userId;
+        return userJpaRepository.findByuserName(userName);
     }
 
     public void     addMyShop(Long shopNumber, String name) {

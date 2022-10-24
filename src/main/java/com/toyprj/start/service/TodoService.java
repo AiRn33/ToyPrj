@@ -35,22 +35,16 @@ public class TodoService {
 
     public List<Todo> getTodoList(Long id) {
 
-        List<Todo> list = todoJpaRepostiory.findByUserId(id);
-
-        return list;
+        return todoJpaRepostiory.findByUserId(id);
     }
     public List<Todo> getTodoComplete(Long id) {
 
-        List<Todo> list = todoJpaRepostiory.findByUserIdComplete(id);
-
-        return list;
+        return todoJpaRepostiory.findByUserIdComplete(id);
     }
 
     public int getTodoListCount(Long id){
 
-        int count = todoJpaRepostiory.getCountTodoList(id);
-
-        return count;
+        return todoJpaRepostiory.getCountTodoList(id);
     }
 
     public void TodoListComplete(Long todoNumber){

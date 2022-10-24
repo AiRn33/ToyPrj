@@ -9,6 +9,8 @@ import com.toyprj.start.repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BuyService {
@@ -40,6 +42,16 @@ public class BuyService {
         buyJpaRepostiory.save(buy);
 
         return 1;
+    }
+
+    // 판매 목록 확인
+    public List<Buy> sellCheck(Long sellId){
+
+        return buyJpaRepostiory.selllCheck(sellId);
+    }
+
+    public List<Buy> buyCheck(Long buyId) {
+        return buyJpaRepostiory.buyCheck(buyId);
     }
 }
 

@@ -60,9 +60,7 @@ public class ShopService {
 
     public Shop getShop(Long shopNumber){
 
-        Shop shop = shopJpaRepostiory.getShop(shopNumber);
-
-       return shop;
+       return shopJpaRepostiory.getShop(shopNumber);
     }
 
     @Transactional

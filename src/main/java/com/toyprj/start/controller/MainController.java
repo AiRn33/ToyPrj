@@ -57,12 +57,6 @@ public class MainController {
     @GetMapping("/findPassword")
     public String findPassword(Model model){
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
-
         return "/findPasswordForm";
     }
 

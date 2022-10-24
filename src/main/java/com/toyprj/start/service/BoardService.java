@@ -33,9 +33,7 @@ public class BoardService {
 
     public Board getBoard(Long boardnumber){
 
-        Board board = boardJpaRepostiory.findById(boardnumber).orElse(null);
-
-        return board;
+        return boardJpaRepostiory.findById(boardnumber).orElse(null);
     }
 
     public void createBoard(String boardTitle, String boardContent, String name){
@@ -59,6 +57,7 @@ public class BoardService {
 
         BoardDto dto = new BoardDto();
 
+        dto.setId(board.getId());
         dto.setBoardNumber(boardNumber);
         dto.setBoardWriter(board.getBoardWriter());
         dto.setBoardTitle(boardTitle);

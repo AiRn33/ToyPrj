@@ -111,9 +111,8 @@ public class UserController {
 
         userService.modifyPw(pw,name);
 
-        User user = userService.getUser(name);
-
-        model.addAttribute("name", user);
+        model.addAttribute("name", userService.getUser(name));
+        model.addAttribute("roles", userService.getUser(name).getRoles().equals("ROLE_MEMBER")?"일반 유저":"관리자 유저");
 
         return "/user/mypage";
     }

@@ -25,14 +25,12 @@ public class SearchService {
 
     public List<Board> searchBoard(String search){
 
-        List<Board> result = boardJpaRepostiory.searchBoard(search);
-        return result;
+        return boardJpaRepostiory.searchBoard(search);
     }
 
     public List<Shop> searchShop(String search){
 
-        List<Shop> result = shopJpaRepostiory.searchShop(search);
-        return result;
+        return shopJpaRepostiory.searchShop(search);
     }
 
 }

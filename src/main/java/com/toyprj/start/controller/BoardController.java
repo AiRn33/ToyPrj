@@ -26,17 +26,37 @@ public class BoardController {
 
     // 전체 게시판 조회
     @GetMapping("/board/getBoardList")
-    public String getBoardListPage(Model model, @PageableDefault(size = 7, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+    public String getBoardListPage(Model model, @PageableDefault(size = 7, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         model.addAttribute("board", boardService.getBoardList(pageable));
 
         List<BoardPage> pageNum = new ArrayList<BoardPage>();
-        for(int i = 0;
-            i < (boardService.getBoardPage() / 7) + 1 + (boardService.getBoardPage() % 7 == 0 ? -1 : 0); i++) {
+
+
+        int check = ((pageable.getPageNumber() < 3) ? pageable.getPageNumber() + (5 - pageable.getPageNumber()) : pageable.getPageNumber() + 3);
+
+        for (int i = (pageable.getPageNumber() - 2) < 0 ? 0 : pageable.getPageNumber() - 2;
+             i < ((check <= boardService.getBoardPage() / 7) ? check :
+                     (boardService.getBoardPage() % 7 != 0 ? (boardService.getBoardPage() / 7) + 1 : boardService.getBoardPage() / 7)); i++) {
+
             BoardPage bp = new BoardPage(i, i + 1);
             pageNum.add(bp);
+
         }
+        int startPage = pageable.getPageNumber() - 3;
+        if (pageable.getPageNumber() != 0) {
+            model.addAttribute("start", startPage <= 0 ? 0 : startPage);
+        }
+
+        int endPage = boardService.getBoardPage() % 7 != 0 ? (boardService.getBoardPage() / 7) + 1 : boardService.getBoardPage() / 7;
+        if(pageable.getPageNumber() + 3 < endPage){
+            model.addAttribute("end", pageable.getPageNumber() + 3);
+        }
+        // 페이지 넘버는 16
+
+
         model.addAttribute("page", pageNum);
+
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
@@ -48,16 +68,15 @@ public class BoardController {
     }
 
 
-
     // 게시글 상세 조회
     @GetMapping("/board/getBoard/{boardNumber}")
-    public String getBoard(@PathVariable("boardNumber") Long boardNumber,Model model){
+    public String getBoard(@PathVariable("boardNumber") Long boardNumber, Model model) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
         String name = userDetails.getUsername();
 
-        if(boardService.getBoard(boardNumber).getId() == userService.getUser(name).getId()){
+        if (boardService.getBoard(boardNumber).getId() == userService.getUser(name).getId()) {
             model.addAttribute("check", 1);
         }
 
@@ -70,7 +89,7 @@ public class BoardController {
 
     // 게시글 생성
     @GetMapping("/board/createBoard")
-    public String createBoard(Model model){
+    public String createBoard(Model model) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
@@ -83,7 +102,7 @@ public class BoardController {
 
     @PostMapping("/createBoardProc")
     public String createBoardProc(@RequestParam String boardTitle,
-                                  @RequestParam String boardContent){
+                                  @RequestParam String boardContent) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
@@ -98,7 +117,7 @@ public class BoardController {
     // 게시글 수정
     @GetMapping("/board/modifyBoard/{boardNumber}")
     public String modifyGetBoard(@PathVariable("boardNumber") Long boardNumber,
-                              Model model){
+                                 Model model) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
@@ -106,34 +125,35 @@ public class BoardController {
 
         model.addAttribute("name", name);
 
-        model.addAttribute("board",boardService.getBoard(boardNumber));
+        model.addAttribute("board", boardService.getBoard(boardNumber));
 
         return "/board/modifyBoard";
     }
 
     @PostMapping("/modifyBoard/{boardNumber}")
     public String modifyPostBoard(@PathVariable("boardNumber") Long boardNumber,
-                              Model model, @RequestParam("boardTitle") String boardTitle,
-                                  @RequestParam("boardContent") String boardContent){
+                                  Model model, @RequestParam("boardTitle") String boardTitle,
+                                  @RequestParam("boardContent") String boardContent) {
 
-        boardService.modifyBoard(boardNumber ,boardTitle,boardContent);
+        boardService.modifyBoard(boardNumber, boardTitle, boardContent);
 
         model.addAttribute("board", boardService.getBoard(boardNumber));
 
-        return "redirect:/board/getBoard/"+boardNumber;
+        return "redirect:/board/getBoard/" + boardNumber;
     }
+
     // 게시글 삭제
     @GetMapping("/board/deleteBoard/{boardNumber}")
     public String deleteBoard(@PathVariable("boardNumber") Long boardNumber
-                            ,Model model){
+            , Model model) {
 
-        model.addAttribute("boardNumber",boardNumber);
+        model.addAttribute("boardNumber", boardNumber);
 
         return "/board/deleteBoardProc";
     }
 
     @GetMapping("/deleteBoardProc/{boardNumber}")
-    public String deleteProc(@PathVariable("boardNumber") Long boardNumber){
+    public String deleteProc(@PathVariable("boardNumber") Long boardNumber) {
 
         boardService.deleteBoard(boardNumber);
 

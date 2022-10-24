@@ -30,6 +30,7 @@
                 <div class="col-2"></div>
                 <div class="col-8">
                     <a class="btn btn-primary" href="/shop/myShop">장바구니</a>
+                    <a class="btn btn-danger" href="/shop/buyCheckPage">구매한 상품 목록</a>
                 </div>
             </div>
         </div>
@@ -38,17 +39,21 @@
 
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
-        <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
-        </li>
         {{#page}}
+            {{#start}}
+                <li class="page-item">
+                    <a class="page-link" href="#" tabindex="-1">이전</a>
+                </li>
+            {{/start}}
             <li class="page-item"><a class="page-link"
                                      href="/shop/main?page={{pageNum}}
                 ">{{pageView}}</a></li>
+
+            <li class="page-item">
+                <a class="page-link" href="#">다음</a>
+            </li>
         {{/page}}
-        <li class="page-item">
-            <a class="page-link" href="#">다음</a>
-        </li>
+
     </ul>
 </nav>
 
