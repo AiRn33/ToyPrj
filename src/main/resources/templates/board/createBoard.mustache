@@ -1,4 +1,24 @@
 {{>layout/header}}
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+function check() {
+    var boardTitle = $("#boardTitle").val();
+    var boardContent = $("#boardContent").val();
+
+    if(!boardTitle){
+        alert("게시판 제목을 입력해주세요");
+        $("#boardTitle").focus();
+        return false;
+    }else if(!boardContent){
+        alert("게시판 내용을 입력해주세요");
+        $("#boardContent").focus();
+        return false;
+    }
+}
+
+</script>
+
 <body>
 
 <br><br><br><br><br><br>
@@ -17,7 +37,7 @@
                 </li>
             </ul>
             <!-- Pills content -->
-            <form action="/createBoardProc" method="POST">
+            <form action="/createBoardProc" method="POST" id="formData" onsubmit="return check();">
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
                         <!-- Email input -->
@@ -26,7 +46,7 @@
                         </p>
 
                         <div class="form-outline mb-4">
-                            <input type="text" id="loginName" name="boardTitle" class="form-control text-center"/>
+                            <input type="text" id="boardTitle" name="boardTitle" class="form-control text-center"/>
                         </div>
 
                         <p class="text-center">
@@ -34,7 +54,7 @@
                         </p>
 
                         <div class="form-outline mb-3">
-                            <textarea rows="10px" name="boardContent" class="form-control text-center"></textarea>
+                            <textarea rows="10px" id="boardContent" name="boardContent" class="form-control text-center"></textarea>
                         </div>
                         <div class="form-outline mb-3">
                             <button type="submit" class="btn btn-primary">작성하기</button>

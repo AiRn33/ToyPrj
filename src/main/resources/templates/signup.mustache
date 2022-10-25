@@ -1,4 +1,47 @@
 {{>layout/header}}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    function signup() {
+
+    var userId = $("#userId").val();
+    var userPassword = $("#userPassword").val();
+    var userName = $("#userName").val();
+
+    if(!userId){
+        alert("아이디를 입력해주세요");
+        $("#userId").focus();
+        return false;
+    }else if(!userPassword){
+       alert("비밀번호를 입력해주세요");
+       $("#userPassword").focus();
+       return false;
+    }else if(!userName){
+       alert("이름을 입력해주세요");
+       $("#userName").focus();
+       return false;
+    }
+
+    var formData = $("#formData").serialize();
+    var flag = true;
+
+     $.ajax({
+                url : '/signupIdCheck',
+                type: 'post',
+                data: formData,
+                async: false,
+                success: function(data) {
+                    if(data == 0){
+                        alert("중복되는 아이디가 있습니다");
+                        flag = false;
+                    }else if(data == 1){
+                        alert("회원가입 성공");
+                        flag = true;
+                    }
+                }
+            });
+            return flag;
+    }
+</script>
 <body>
 <br><br><br><br><br><br>
 
@@ -20,20 +63,20 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
                     <!-- Email input -->
-                    <form action="/signupProc" method="post">
+                    <form id="formData" action="/signupProc" method="post" onsubmit="return signup();">
                         <p class="text-center">
                             <button class="btn btn-primary me-2" disabled>아이디</button>
                         </p>
 
                         <div class="form-outline mb-4">
-                            <input type="text" name="userId"class="form-control text-center"/>
+                            <input type="text" name="userId" id="userId"class="form-control text-center"/>
                         </div>
                         <p class="text-center">
                             <button class="btn btn-primary me-2" disabled>비밀번호</button>
                         </p>
 
                         <div class="form-outline mb-4">
-                            <input type="password" name="userPassword"class="form-control text-center"/>
+                            <input type="password" id="userPassword" name="userPassword"class="form-control text-center"/>
                         </div>
 
                         <p class="text-center">
@@ -41,9 +84,11 @@
                         </p>
 
                         <div class="form-outline mb-3">
-                            <input type="text" name="userName"class="form-control text-center"/>
+                            <input type="text" id="userName" name="userName"class="form-control text-center"/>
                         </div>
+
                         <input type="hidden" name="check" value="normal">
+
                         <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-block mb-4">가입하기</button>
                         <a class="btn btn-danger btn-block mb-4" onclick="location.href='/main'">돌아가기</a>

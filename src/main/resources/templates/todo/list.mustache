@@ -5,6 +5,14 @@ var check =1;
 
     function createTodo() {
 
+    var todoTitle = $("#todoTitle").val();
+
+    if(!todoTitle){
+        alert("목표를 입력해주세요");
+        $("#todoTitle").focus();
+        return false;
+    }
+
     var formData = $("#formData").serialize();
 
      $.ajax({
@@ -38,7 +46,7 @@ var check =1;
                     <form id="formData" class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
                         <div class="col-12 text-center">
                             <div class="form-outline">
-                                <input type="text" name="todo_title" class="form-control text-center"/>
+                                <input type="text" name="todo_title" ID="todoTitle" class="form-control text-center"/>
                                 <br>
                                 <p class="text-center">
                                     <button class="btn btn-danger me-2" disabled>목표를 입력해주세요 (5개 까지만 입력 가능)</button>

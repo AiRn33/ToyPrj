@@ -1,4 +1,39 @@
 {{>layout/header}}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+function check() {
+
+    var shopTitle = $("#shopTitle").val();
+    var shopContent = $("#shopContent").val();
+    var shopAmount = $("#shopAmount").val();
+    var fileCheck = $("#file_check").val();
+    var shopPrice = $("#shopPrice").val();
+
+    if(!shopTitle){
+        alert("상품 이름을 입력해주세요");
+        $("#shopTitle").focus();
+        return false;
+    }else if(!shopContent){
+        alert("상품 설명을 입력해주세요");
+        $("#shopContent").focus();
+        return false;
+    }else if(!shopAmount){
+        alert("상품 갯수를 입력해주세요");
+        $("#shopAmount").focus();
+        return false;
+    }else if(!fileCheck){
+        alert("파일을 첨부해 주세요");
+        $("#fileCheck").focus();
+        return false;
+    }else if(!shopPrice){
+        alert("상품 가격을 입력해주세요");
+        $("#shopPrice").focus();
+        return false;
+    }
+
+}
+</script>
+
 <body>
 
 <br><br><br><br><br><br>
@@ -20,7 +55,7 @@
         <div class="tab-content">
         <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
             <!-- Email input -->
-        <form action="/shop/modifyShop/{{shopNumber}}" method="post" enctype="multipart/form-data">
+        <form action="/shop/modifyShop/{{shopNumber}}" method="post" enctype="multipart/form-data" onsubmit="return check()">
 
             {{#shop}}
                 <div class="form-outline mb-3">
@@ -31,7 +66,7 @@
                 </p>
 
                 <div class="form-outline mb-4">
-                    <input type="text" id="loginName" name="shopTitle" class="form-control text-center"
+                    <input type="text" id="shopTitle" name="shopTitle" class="form-control text-center"
                            value="{{shopTitle}}"/>
                 </div>
 
@@ -40,7 +75,7 @@
                 </p>
 
                 <div class="form-outline mb-3">
-                        <textarea rows="10px" name="shopContent"
+                        <textarea rows="10px" id="shopContent" name="shopContent"
                                   class="form-control text-center">{{shopContent}}</textarea>
                 </div>
                 <p class="text-center">
@@ -49,19 +84,19 @@
                 </p>
 
                 <div class="form-outline mb-3">
-                    <input type="text" name="shopAmount" class="form-control text-center"
+                    <input type="text" id="shopAmount" name="shopAmount" class="form-control text-center"
                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                            placeholder="숫자만 입력이 가능합니다" value="{{shopAmount}}"/>
                 </div>
                 <div class="form-outline mb-3">
-                    <input type="file" name="file" value="파일 업로드">
+                    <input type="file" name="file" id="file_check" value="파일 업로드">
                 </div>
                 <p class="text-center">
                     <button class="btn btn-primary me-2" disabled>판매 가격</button>
                 </p>
 
                 <div class="form-outline mb-3">
-                    <input type="text" name="shopPrice" class="form-control text-center"
+                    <input type="text" name="shopPrice" id="shopPrice"  class="form-control text-center"
                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                            placeholder="숫자만 입력이 가능합니다"/>
                 </div>

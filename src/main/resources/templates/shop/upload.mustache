@@ -3,13 +3,36 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
 function check() {
+    var shopTitle = $("#shopTitle").val();
+    var shopContent = $("#shopContent").val();
+    var shopAmount = $("#shopAmount").val();
     var fileCheck = $("#file_check").val();
+    var shopPrice = $("#shopPrice").val();
 
-    if(!fileCheck){
+    if(!shopTitle){
+        alert("상품 이름을 입력해주세요");
+        $("#shopTitle").focus();
+        return false;
+    }else if(!shopContent){
+        alert("상품 설명을 입력해주세요");
+        $("#shopContent").focus();
+        return false;
+    }else if(!shopAmount){
+        alert("상품 갯수를 입력해주세요");
+        $("#shopAmount").focus();
+        return false;
+    }else if(!fileCheck){
         alert("파일을 첨부해 주세요");
+        $("#fileCheck").focus();
+        return false;
+    }else if(!shopPrice){
+        alert("상품 가격을 입력해주세요");
+        $("#shopPrice").focus();
         return false;
     }
+
 }
+
 </script>
 <!-- End Title-->
 <br><br><br><br><br><br>
@@ -30,7 +53,7 @@ function check() {
             </ul>
             <!-- Pills content -->
 
-            <form action="/shop/upload" method="post" enctype="multipart/form-data" onsubmit="return check()">
+            <form action="/shop/upload" method="post" enctype="multipart/form-data" onsubmit="return check();">
 
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
@@ -40,7 +63,7 @@ function check() {
                         </p>
 
                         <div class="form-outline mb-4">
-                            <input type="text" name="shopTitle" class="form-control text-center"/>
+                            <input type="text" id="shopTitle" name="shopTitle" class="form-control text-center"/>
                         </div>
 
                         <p class="text-center">
@@ -48,7 +71,8 @@ function check() {
                         </p>
 
                         <div class="form-outline mb-3">
-                            <textarea rows="10px" name="shopContent" class="form-control text-center"></textarea>
+                            <textarea rows="10px" id="shopContent" name="shopContent"
+                                      class="form-control text-center"></textarea>
                         </div>
 
                         <p class="text-center">
@@ -57,7 +81,7 @@ function check() {
                         </p>
 
                         <div class="form-outline mb-3">
-                            <input type="text" name="shopAmount" class="form-control text-center"
+                            <input type="text" id="shopAmount" name="shopAmount" class="form-control text-center"
                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                    placeholder="숫자만 입력이 가능합니다"/>
                         </div>
@@ -70,7 +94,7 @@ function check() {
                         </p>
 
                         <div class="form-outline mb-3">
-                            <input type="text" name="shopPrice" class="form-control text-center"
+                            <input type="text" id="shopPrice" name="shopPrice" class="form-control text-center"
                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                    placeholder="숫자만 입력이 가능합니다"/>
                         </div>

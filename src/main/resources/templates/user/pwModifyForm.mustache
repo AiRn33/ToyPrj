@@ -1,5 +1,19 @@
 
 {{>layout/header}}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    function check() {
+
+        var userPassword = $("#userPassword").val();
+
+        if(!userPassword){
+            alert("비밀번호를 입력해주세요");
+            $("#userPassword").focus();
+            return false;
+        }
+    }
+</script>
+
 <body>
 <br><br><br><br><br><br>
 
@@ -21,13 +35,13 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
                     <!-- Email input -->
-                   <form action="/user/pwModifyProc" method="post">
+                   <form action="/user/pwModifyProc" method="post" onsubmit="return check()">
                         <p class="text-center">
                             <button class="btn btn-primary me-2" disabled>변경할 비밀번호</button>
                         </p>
 
                         <div class="form-outline mb-4">
-                            <input type="password" name="userPassword"class="form-control text-center"/>
+                            <input type="password" id="userPassword" name="userPassword" class="form-control text-center"/>
                         </div>
                     <!-- Submit button -->
                     <button type="submit" class="btn btn-primary btn-block mb-4">수정하기</button>

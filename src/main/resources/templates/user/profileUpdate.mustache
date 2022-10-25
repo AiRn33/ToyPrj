@@ -1,5 +1,17 @@
-
 {{>layout/header}}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    function check() {
+
+        var userName = $("#userName").val();
+
+        if(!userName){
+            alert("이름을 입력해주세요");
+            $("#userName").focus();
+            return false;
+        }
+    }
+</script>
 <body>
 <br><br><br><br><br><br>
 
@@ -21,7 +33,7 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
                     <!-- Email input -->
-                   <form action="/profileUpdateProc" method="post">
+                   <form action="/profileUpdateProc" method="post" onsubmit="return check()">
                         <p class="text-center">
                             <button class="btn btn-primary me-2" disabled>아이디</button>
                         </p>
@@ -35,7 +47,7 @@
                         </p>
 
                         <div class="form-outline mb-3">
-                            <input type="text" name="userName"class="form-control text-center"/>
+                            <input type="text" id="userName" name="userName"class="form-control text-center"/>
                         </div>
 
                     <!-- Submit button -->

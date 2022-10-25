@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
@@ -26,17 +27,17 @@ public class MainController {
 
     // 메인 페이지
     @GetMapping("/main")
-    public String index(Model model, HttpSession session){
+    public String index(Model model, HttpSession session) {
 
         String name = null;
         try {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             UserDetails userDetails = (UserDetails) principal;
             name = userDetails.getUsername();
-        }catch (Exception e){
+        } catch (Exception e) {
             name = null;
         }
-        if(name != null){
+        if (name != null) {
             model.addAttribute("name", name);
         }
         return "/main";
@@ -44,7 +45,11 @@ public class MainController {
 
     //로그인
     @GetMapping("/login")
-    public String login() {
+    public String login(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "exception", required = false) String exception, Model model) {
+
+        model.addAttribute("error", error);
+        model.addAttribute("exception", exception);
 
         return "/login";
     }
@@ -55,18 +60,18 @@ public class MainController {
     }
 
     @GetMapping("/findPassword")
-    public String findPassword(Model model){
+    public String findPassword(Model model) {
 
         return "/findPasswordForm";
     }
 
     @PostMapping("/findPasswordForm")
-    public String findPasswordForm(@RequestParam("user_name") String userName, Model model){
+    public String findPasswordForm(@RequestParam("user_name") String userName, Model model) {
 
 
-       String userId = userService.findUser(userName);
+        String userId = userService.findUser(userName);
 
-       model.addAttribute("userId", userId);
+        model.addAttribute("userId", userId);
 
         return "/findPasswordProc";
     }
@@ -77,10 +82,24 @@ public class MainController {
 
         return "/signupCheck";
     }
+
     @GetMapping("/signup")
     public String signUp() {
 
         return "/signup";
+    }
+
+    @ResponseBody
+    @PostMapping("/signupIdCheck")
+    public int signUpIdCheck(@RequestParam("userId")String id,
+                             @RequestParam("userPassword")String password,
+                             @RequestParam("userName")String name){
+
+        if(userService.getUser(id)==null){
+            return 1;
+        }else{
+            return 0;
+        }
     }
     @GetMapping("/signupManager")
     public String signUpManager() {
@@ -94,6 +113,7 @@ public class MainController {
                              @RequestParam("userName") String userName,
                              @RequestParam("check") String check) {
 
+        System.out.println("Proc STart!!");
         userService.signup(userId, userPassword, userName, check);
 
         return "redirect:/main";

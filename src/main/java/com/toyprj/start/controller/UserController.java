@@ -117,11 +117,4 @@ public class UserController {
         return "/user/mypage";
     }
 
-    @GetMapping("/session")
-    public String session(@AuthenticationPrincipal User user, HttpSession session){
-
-        System.out.println(user.getUserId());
-        System.out.println(user.getUserName());
-        return "main";
-    }
 }
