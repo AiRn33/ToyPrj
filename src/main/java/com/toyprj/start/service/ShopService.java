@@ -38,9 +38,11 @@ public class ShopService {
         }
 
         String uuid = UUID.randomUUID() + "."
-                + file.getOriginalFilename().substring(count + 1, file.getOriginalFilename().length());
+                + file.getOriginalFilename().substring
+                (count + 1, file.getOriginalFilename().length());
 
-        String path = "C:\\start\\src\\main\\resources\\static\\img\\" + user.getId(); //폴더 경로
+        String path = "C:\\start\\src\\main\\resources\\static\\img\\"
+                + user.getId(); //폴더 경로
 
         File Folder = new File(path);
 

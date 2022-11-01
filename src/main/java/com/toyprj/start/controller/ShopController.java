@@ -4,6 +4,7 @@ import com.toyprj.start.entity.Shop;
 import com.toyprj.start.entity.User;
 import com.toyprj.start.model.BoardPage;
 import com.toyprj.start.model.shopPage;
+import com.toyprj.start.recode.SetModelName;
 import com.toyprj.start.service.BoardService;
 import com.toyprj.start.service.ShopService;
 import com.toyprj.start.service.TodoService;
@@ -46,14 +47,10 @@ public class ShopController {
     @GetMapping("/shop/main")
     public String getBoardListPage(Model model, @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.DESC) Pageable pageableMember) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
 
-        if(userService.getUser(name).getRoles().equals("ROLE_MEMBER")) {
+        if(userService.getUser(setModelName.getName()).getRoles().equals("ROLE_MEMBER")) {
             model.addAttribute("shop", shopService.getShopList(pageableMember));
 
             List<shopPage> pageNum = new ArrayList<shopPage>();
@@ -64,14 +61,14 @@ public class ShopController {
             }
             model.addAttribute("page", pageNum);
 
-            if (userService.getUser(name).getRoles().equals("ROLE_MANAGER")) {
+            if (userService.getUser(setModelName.getName()).getRoles().equals("ROLE_MANAGER")) {
                 model.addAttribute("check", 1);
             }
 
             return "/shop/main";
 
         }else{
-            model.addAttribute("shop", shopService.getSellShopList(userService.getUser(name).getId()));
+            model.addAttribute("shop", shopService.getSellShopList(userService.getUser(setModelName.getName()).getId()));
 
             return "/shop/sell";
         }
@@ -80,25 +77,17 @@ public class ShopController {
     @GetMapping("/shop/sell")
     public String sell(Model model){
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
         model.addAttribute("check", 1);
-        model.addAttribute("shop", shopService.getSellShopList(userService.getUser(name).getId()));
+        model.addAttribute("shop", shopService.getSellShopList(userService.getUser(setModelName.getName()).getId()));
 
         return "/shop/sell";
     }
     @GetMapping("/shop/upload")
     public String FileUploadGet(Model model) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
         return "/shop/upload";
     }
@@ -110,12 +99,10 @@ public class ShopController {
                                  @RequestParam String shopAmount,
                                  @RequestParam String shopPrice) throws IOException {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
+        SetModelName setModelName = new SetModelName();
 
         // 회원 정보 검색
-        User user = userService.getUser(name);
+        User user = userService.getUser(setModelName.getName());
 
         shopService.createShop(user, file, shopTitle, shopContent, shopAmount, shopPrice);
 
@@ -125,18 +112,15 @@ public class ShopController {
     @GetMapping("/shop/getShop/{shopNumber}")
     public String getShop(Model model, @PathVariable("shopNumber") Long shopNumber) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
+        SetModelName setModelName = new SetModelName(model);
 
         Shop shop = shopService.getShop(shopNumber);
 
-        Long id = userService.getUser(name).getId();
+        Long id = userService.getUser(setModelName.getName()).getId();
 
         if (id == shop.getId()) {
             model.addAttribute("check", 1);
         }
-        model.addAttribute("name", name);
         model.addAttribute("shop", shop);
 
         return "/shop/getShop";
@@ -145,13 +129,12 @@ public class ShopController {
     @GetMapping("/shop/modifyShop/{shopNumber}")
     public String modifyShop(@PathVariable("shopNumber") Long shopNumber, Model model) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
+
 
         Shop shop = shopService.getShop(shopNumber);
 
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
+
         model.addAttribute("shop", shop);
 
         return "/shop/modifyShop";
@@ -166,11 +149,7 @@ public class ShopController {
                              @RequestParam Long shopAmount,
                              Model model) throws IOException {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
         Shop shop = shopService.getShop(shopNumber);
 
@@ -182,11 +161,7 @@ public class ShopController {
     @GetMapping("/shop/deleteShop/{shopNumber}")
     public String deleteShop(@PathVariable("shopNumber") Long shopNumber, Model model) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
         model.addAttribute("shopNumber", shopNumber);
 
@@ -204,13 +179,10 @@ public class ShopController {
     @GetMapping("/shop/myShop")
     public String myShop(Model model) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
+        SetModelName setModelName = new SetModelName(model);
 
-        List<Shop> shop = shopService.getMyShop(name);
+        List<Shop> shop = shopService.getMyShop(setModelName.getName());
 
-        model.addAttribute("name", name);
         model.addAttribute("shop", shop);
 
         return "/shop/myShop";
@@ -219,11 +191,9 @@ public class ShopController {
     @GetMapping("/shop/addMyShop/{shopNumber}")
     public String addMyShop(Model model, @PathVariable("shopNumber") Long shopNumber) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
+        SetModelName setModelName = new SetModelName(model);
 
-        userService.addMyShop(shopNumber, name);
+        userService.addMyShop(shopNumber, setModelName.getName());
 
         return "redirect:/shop/main";
     }
@@ -231,11 +201,9 @@ public class ShopController {
     @GetMapping("/shop/deleteMyShop/{shopNumber}")
     public String deleteMyShop(Model model, @PathVariable("shopNumber") Long shopNumber) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
+        SetModelName setModelName = new SetModelName(model);
 
-        userService.deleteMyShop(shopNumber, name);
+        userService.deleteMyShop(shopNumber, setModelName.getName());
 
         return "redirect:/shop/myShop";
     }

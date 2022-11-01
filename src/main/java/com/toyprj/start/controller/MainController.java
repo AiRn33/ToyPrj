@@ -59,13 +59,13 @@ public class MainController {
         return "/logoutForm";
     }
 
-    @GetMapping("/findPassword")
+    @GetMapping("/findId")
     public String findPassword(Model model) {
 
-        return "/findPasswordForm";
+        return "/findIdForm";
     }
 
-    @PostMapping("/findPasswordForm")
+    @PostMapping("/findIdForm")
     public String findPasswordForm(@RequestParam("user_name") String userName, Model model) {
 
 
@@ -73,7 +73,7 @@ public class MainController {
 
         model.addAttribute("userId", userId);
 
-        return "/findPasswordProc";
+        return "/findIdProc";
     }
 
     // 회원가입

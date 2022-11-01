@@ -1,6 +1,7 @@
 package com.toyprj.start.controller;
 
 import com.toyprj.start.entity.Todo;
+import com.toyprj.start.recode.SetModelName;
 import com.toyprj.start.service.TodoService;
 import com.toyprj.start.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,15 +30,11 @@ public class TodoController {
     @GetMapping("/todo/list")
     public String todo(Model model) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
         try {
 
-            Long id = userService.getUser(name).getId();
+            Long id = userService.getUser(setModelName.getName()).getId();
 
             List list = todoService.getTodoList(id);
 
@@ -53,15 +50,11 @@ public class TodoController {
     @GetMapping("/todo/listSuccess")
     public String todoSuccess(Model model) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
         try {
 
-            Long id = userService.getUser(name).getId();
+            Long id = userService.getUser(setModelName.getName()).getId();
 
             List list = todoService.getTodoComplete(id);
 
@@ -77,11 +70,9 @@ public class TodoController {
     @ResponseBody
     public int todoCreate(@RequestParam("todo_title") String todoTitle) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
+        SetModelName setModelName = new SetModelName();
 
-        Long id = userService.getUser(name).getId();
+        Long id = userService.getUser(setModelName.getName()).getId();
 
         int count = todoService.getTodoListCount(id);
 
@@ -96,11 +87,7 @@ public class TodoController {
     public String todoComplete(@RequestParam("todo_number") Long todoNumber,Model model) {
 
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
         todoService.TodoListComplete(todoNumber);
 
@@ -111,11 +98,7 @@ public class TodoController {
     public String todoDeleteList(@RequestParam("todo_number") Long todoNumber,Model model) {
 
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
         todoService.getTodoListDelete(todoNumber);
 

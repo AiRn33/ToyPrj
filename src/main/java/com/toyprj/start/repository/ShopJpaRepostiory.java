@@ -34,7 +34,8 @@ public interface ShopJpaRepostiory extends JpaRepository<Shop, Long> {
     @Query(value = "select count(shop_number) from shop", nativeQuery = true )
     int pageNumberCheckMember();
 
-    @Query(value = "update shop set shop_amount = :shop_amount where shop_number = :shop_number", nativeQuery = true)
+    @Query(value = "update shop set shop_amount = " +
+            ":shop_amount where shop_number = :shop_number", nativeQuery = true)
     @Modifying
     @Transactional
     void discountAmount(@Param("shop_amount") Long shop_amount, @Param("shop_number") Long shop_number);

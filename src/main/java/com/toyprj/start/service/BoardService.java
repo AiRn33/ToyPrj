@@ -36,17 +36,13 @@ public class BoardService {
         return boardJpaRepostiory.findById(boardnumber).orElse(null);
     }
 
-    public void createBoard(String boardTitle, String boardContent, String name){
+    public void createBoard(String boardTitle,
+                            String boardContent, String name){
 
         User user = userJpaRepository.findByuserId(name);
 
-        BoardDto dto = new BoardDto();
-
-        dto.setBoardTitle(boardTitle);
-        dto.setBoardCount(0);
-        dto.setBoardWriter(user.getUserName());
-        dto.setBoardContent(boardContent);
-        dto.setId(user.getId());
+        BoardDto dto = new BoardDto(user.getId(),
+                user.getUserName(), boardTitle, boardContent);
 
         boardJpaRepostiory.save(dto.toEntity());
     }

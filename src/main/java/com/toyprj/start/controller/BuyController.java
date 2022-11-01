@@ -2,6 +2,7 @@ package com.toyprj.start.controller;
 
 import com.toyprj.start.entity.Buy;
 import com.toyprj.start.model.BuyDto;
+import com.toyprj.start.recode.SetModelName;
 import com.toyprj.start.service.BuyService;
 import com.toyprj.start.service.ShopService;
 import com.toyprj.start.service.UserService;
@@ -31,13 +32,9 @@ public class BuyController {
     public String ShopBuy(@PathVariable("shopNumber")Long shopNumber,
                           @RequestParam("shopAmount")Long shopAmount,Model model){
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
+        SetModelName setModelName = new SetModelName(model);
 
-        model.addAttribute("name", name);
-
-        int number = buyService.buyShop(shopService.getShop(shopNumber), userService.getUser(name).getId(), shopAmount);
+        int number = buyService.buyShop(shopService.getShop(shopNumber), userService.getUser(setModelName.getName()).getId(), shopAmount);
 
         model.addAttribute("number", number);
 
@@ -47,12 +44,9 @@ public class BuyController {
     @GetMapping("/shop/sellCheck")
     public String sellCheck(Model model){
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
-        List<Buy> list = buyService.sellCheck(userService.getUser(name).getId());
+        List<Buy> list = buyService.sellCheck(userService.getUser(setModelName.getName()).getId());
         List<BuyDto> check = new ArrayList<>();
 
         for(int i = 0; i < list.size(); i++){
@@ -71,12 +65,9 @@ public class BuyController {
     @GetMapping("/shop/buyCheckPage")
     public String buyCheck(Model model){
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
-        List<Buy> list = buyService.buyCheck(userService.getUser(name).getId());
+        List<Buy> list = buyService.buyCheck(userService.getUser(setModelName.getName()).getId());
         List<BuyDto> check = new ArrayList<>();
 
         for(int i = 0; i < list.size(); i++){

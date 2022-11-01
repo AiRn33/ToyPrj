@@ -2,6 +2,7 @@ package com.toyprj.start.controller;
 
 import com.toyprj.start.entity.User;
 import com.toyprj.start.model.UserDto;
+import com.toyprj.start.recode.SetModelName;
 import com.toyprj.start.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,10 +20,7 @@ public class UserController {
 
     private final UserService userService;
 
-
-
     // 회원 탈퇴
-
     @GetMapping("/user/profileDelete")
     public String profileDelete() {
 
@@ -45,12 +43,9 @@ public class UserController {
     @GetMapping("/user/profileUpdate")
     public String profileUpdate(Model model) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
+        SetModelName setModelName = new SetModelName(model);
 
-        User user = userService.getUser(name);
-        model.addAttribute("name", user);
+        model.addAttribute("name", userService.getUser(setModelName.getName()));
 
         return "/user/profileUpdate";
     }
@@ -60,13 +55,10 @@ public class UserController {
 
         userService.updateUser(dto.getUserName());
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
+        SetModelName setModelName = new SetModelName(model);
 
-        User user = userService.getUser(name);
-        model.addAttribute("name", user);
-        model.addAttribute("roles", user.getRoles().equals("ROLE_MEMBER")?"일반 유저":"관리자 유저");
+        model.addAttribute("name", userService.getUser(setModelName.getName()));
+        model.addAttribute("roles", userService.getUser(setModelName.getName()).getRoles().equals("ROLE_MEMBER")?"일반 유저":"관리자 유저");
 
         return "redirect:/user/mypage";
     }
@@ -76,14 +68,10 @@ public class UserController {
     public String myPage(Model model) {
 
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
+        SetModelName setModelName = new SetModelName(model);
 
-        User user = userService.getUser(name);
-
-        model.addAttribute("name", user);
-        model.addAttribute("roles", user.getRoles().equals("ROLE_MEMBER")?"일반 유저":"관리자 유저");
+        model.addAttribute("name", userService.getUser(setModelName.getName()));
+        model.addAttribute("roles", userService.getUser(setModelName.getName()).getRoles().equals("ROLE_MEMBER")?"일반 유저":"관리자 유저");
 
         return "/user/mypage";
     }
@@ -93,11 +81,7 @@ public class UserController {
     @GetMapping("/user/pwModify")
     public String pwModify(Model model){
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
         return "/user/pwModifyForm";
     }
@@ -105,14 +89,12 @@ public class UserController {
     @PostMapping("/user/pwModifyProc")
     public String pwModifyProc(@RequestParam("userPassword") String pw, Model model){
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
+        SetModelName setModelName = new SetModelName();
 
-        userService.modifyPw(pw,name);
+        userService.modifyPw(pw, setModelName.getName());
 
-        model.addAttribute("name", userService.getUser(name));
-        model.addAttribute("roles", userService.getUser(name).getRoles().equals("ROLE_MEMBER")?"일반 유저":"관리자 유저");
+        model.addAttribute("name", userService.getUser(setModelName.getName()));
+        model.addAttribute("roles", userService.getUser(setModelName.getName()).getRoles().equals("ROLE_MEMBER")?"일반 유저":"관리자 유저");
 
         return "/user/mypage";
     }

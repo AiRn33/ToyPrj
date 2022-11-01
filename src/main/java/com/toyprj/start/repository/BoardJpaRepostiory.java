@@ -14,7 +14,9 @@ public interface BoardJpaRepostiory extends JpaRepository<Board, Long> {
     @Query(value = "select count(board_number) from board;", nativeQuery = true )
     int pageNumberCheck();
 
-    @Query(value = "select * from board where board_title like %:search% or board_content like %:search%", nativeQuery = true )
+    @Query(value = "select * from board where board_title " +
+            "like %:search% or board_content like %:search%",
+            nativeQuery = true )
     List<Board> searchBoard(@Param("search")String search);
 
 }

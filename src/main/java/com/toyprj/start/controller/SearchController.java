@@ -2,6 +2,7 @@ package com.toyprj.start.controller;
 
 import com.toyprj.start.entity.Board;
 import com.toyprj.start.entity.Shop;
+import com.toyprj.start.recode.SetModelName;
 import com.toyprj.start.service.BoardService;
 import com.toyprj.start.service.SearchService;
 import com.toyprj.start.service.UserService;
@@ -31,11 +32,7 @@ public class SearchController {
                         ,@RequestParam("search") String search
                         ,Model model){
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
         if(val.equals("Board")){
 

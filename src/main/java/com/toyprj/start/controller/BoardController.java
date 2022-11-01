@@ -1,7 +1,7 @@
 package com.toyprj.start.controller;
 
-import com.toyprj.start.entity.Board;
 import com.toyprj.start.model.BoardPage;
+import com.toyprj.start.recode.SetModelName;
 import com.toyprj.start.service.BoardService;
 import com.toyprj.start.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,18 +26,24 @@ public class BoardController {
 
     // 전체 게시판 조회
     @GetMapping("/board/getBoardList")
-    public String getBoardListPage(Model model, @PageableDefault(size = 7, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public String getBoardListPage(Model model, @PageableDefault(size = 7, sort = "id",
+                                                direction = Sort.Direction.DESC) Pageable pageable) {
 
         model.addAttribute("board", boardService.getBoardList(pageable));
 
         List<BoardPage> pageNum = new ArrayList<BoardPage>();
 
 
-        int check = ((pageable.getPageNumber() < 3) ? pageable.getPageNumber() + (5 - pageable.getPageNumber()) : pageable.getPageNumber() + 3);
+        int check = ((pageable.getPageNumber() < 3) ?
+                pageable.getPageNumber() + (5 - pageable.getPageNumber())
+                : pageable.getPageNumber() + 3);
 
-        for (int i = (pageable.getPageNumber() - 2) < 0 ? 0 : pageable.getPageNumber() - 2;
+        for (int i = (pageable.getPageNumber() - 2) < 0 ? 0 :
+                                pageable.getPageNumber() - 2;
              i < ((check <= boardService.getBoardPage() / 7) ? check :
-                     (boardService.getBoardPage() % 7 != 0 ? (boardService.getBoardPage() / 7) + 1 : boardService.getBoardPage() / 7)); i++) {
+                     (boardService.getBoardPage() % 7 != 0 ?
+                             (boardService.getBoardPage() / 7) + 1 :
+                             boardService.getBoardPage() / 7)); i++) {
 
             BoardPage bp = new BoardPage(i, i + 1);
             pageNum.add(bp);
@@ -58,11 +64,7 @@ public class BoardController {
         model.addAttribute("page", pageNum);
 
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
         return "/board/getBoardList";
     }
@@ -72,15 +74,11 @@ public class BoardController {
     @GetMapping("/board/getBoard/{boardNumber}")
     public String getBoard(@PathVariable("boardNumber") Long boardNumber, Model model) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
+        SetModelName setModelName = new SetModelName(model);
 
-        if (boardService.getBoard(boardNumber).getId() == userService.getUser(name).getId()) {
+        if (boardService.getBoard(boardNumber).getId() == userService.getUser(setModelName.getName()).getId()) {
             model.addAttribute("check", 1);
         }
-
-        model.addAttribute("name", name);
 
         model.addAttribute("board", boardService.getBoard(boardNumber));
 
@@ -91,11 +89,7 @@ public class BoardController {
     @GetMapping("/board/createBoard")
     public String createBoard(Model model) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
         return "/board/createBoard";
     }
@@ -104,11 +98,10 @@ public class BoardController {
     public String createBoardProc(@RequestParam String boardTitle,
                                   @RequestParam String boardContent) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
+        SetModelName setModelName = new SetModelName();
 
-        boardService.createBoard(boardTitle, boardContent, name);
+
+        boardService.createBoard(boardTitle, boardContent, setModelName.getName());
 
         return "redirect:/board/getBoardList";
     }
@@ -119,11 +112,7 @@ public class BoardController {
     public String modifyGetBoard(@PathVariable("boardNumber") Long boardNumber,
                                  Model model) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDetails userDetails = (UserDetails) principal;
-        String name = userDetails.getUsername();
-
-        model.addAttribute("name", name);
+        SetModelName setModelName = new SetModelName(model);
 
         model.addAttribute("board", boardService.getBoard(boardNumber));
 
